@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 ### Send data to test RocketPacket ###
 
 import RocketPacket as ADIS
