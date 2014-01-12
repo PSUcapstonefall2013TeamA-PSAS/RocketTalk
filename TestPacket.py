@@ -35,7 +35,16 @@ telemetry = subprocess.Popen({"./../telemetry/telemetry.py"})
 
 while True:
     try:
-        p[10] += 1000
+        p[10] += 100
+
+        if p[4] == 10:
+            p[4] = 0
+            p[5] = 0
+            p[6] = 0
+        else:
+            p[4] = 10
+            p[5] = 5
+            p[6] = 3
         adis.send_message(p)
         time.sleep(2)
     except KeyboardInterrupt:
