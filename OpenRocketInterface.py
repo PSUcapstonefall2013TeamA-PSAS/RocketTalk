@@ -12,4 +12,6 @@ class OpenRocketInterface(object):
         jpype.shutdownJVM()
 
     def getDeploymentVelocity(self):
-        print self.apiInstance.getDeploymentVelocity()
+	self.apiInstance.LoadRocket('/home/annajoel/foo.ork')
+	self.apiInstance.RunSimulation()
+	print self.apiInstance.getDeploymentVelocity()
