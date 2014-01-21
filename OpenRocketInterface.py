@@ -38,28 +38,57 @@ class OpenRocketInterface(object):
         return self.apiInstance.GetTimeStep()
     def cleanup(self):
         jpype.shutdownJVM()
-    def LoadRocket(self, rocketname, index=0):
-	print rocketname
-        self.apiInstance.LoadRocket(jpype.JString(rocketname))#, int(index))
+        
+    def GetVelocityX(self):
+        return self.apiInstance.GetVelocityX()	#returns int
+
+    def GetVelocityY(self):
+        return self.apiInstance.GetVelocityY() #returns int
+
+    def GetVelocityZ(self):
+        return self.apiInstance.GetVelocityZ() #returns int
+
+    def IsSimulationRunning(self):
+        return self.apiInstance.IsSimulationRunning() #returns bool
+
     def StartSimulation(self):
-        self.apiInstance.StartSimulation()
-    def GetVelocity(self):
-	x = self.apiInstance.GetVelocityX()
-	y = self.apiInstance.GetVelocityY()
-	z = self.apiInstance.GetVelocityZ()
-        return (x,y,z)
+        return self.apiInstance.StartSimulation() #returns int
+
+    def SimulationStep(self):
+        return self.apiInstance.SimulationStep() #returns int
+
+    def SimulationStep(self, timestep): #takes in a double
+        return self.apiInstance.SimulationStep(timestep) #returns int
+
+    def LoadRocket(self, szFileName): #takes in a string
+        return self.apiInstance.LoadRocket(szFileName) #returns int
+
     def RunSimulation(self):
         self.apiInstance.RunSimulation()
-    def IsSimulationLoopRunning(self):
-        return self.apiInstance.IsSimulationLoopRunning()
-    def IsSimulationStagesRunning(self):
-        return self.apiInstance.IsSimulationStagesRunning()
-    def SimulationStep(self, timestep=None):
-        if timestep != None:
-            return self.apiInstance.SimulationStep(timestep)
-        return self.apiInstance.SimulationStep()
-    def StagesStep(self):
-        return self.apiInstance.StagesStep()
+
+    def getMaxAltitude(self):
+        return self.apiInstance.getMaxAltitude() #returns double
+
+    def getMaxVelocity(self):
+        return self.apiInstance.getMaxVelocity() #returns double
+
+    def getMaxAcceleration(self):
+        return self.apiInstance.getMaxAcceleration() #returns double
+
+    def getMaxMachNumber(self):
+        return self.apiInstance.getMaxMachNumber() #returns double
+
+    def getTimeToApogee(self):
+        return self.apiInstance.getTimeToApogee() #returns double
+
+    def getFlightTime(self):
+        return self.apiInstance.getFlightTime() #returns double
+
+    def getGroundHitVelocity(self):
+        return self.apiInstance.getGroundHitVelocity() #returns double
+
+    def getLaunchRodVelocity(self):
+        return self.apiInstance.getLaunchRodVelocity() #returns double
 
     def getDeploymentVelocity(self):
-    	return self.apiInstance.getDeploymentVelocity()
+        return self.apiInstance.getDeploymentVelocity() #returns double
