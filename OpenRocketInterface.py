@@ -34,10 +34,18 @@ class OpenRocketInterface(object):
                 print "Caught the runtime exception:\n     ", ex.message()
             quit()
         self.apiInstance = OpenRocketAPI()
+        
     def GetTimeStep(self):
         return self.apiInstance.GetTimeStep()
+        
     def cleanup(self):
         jpype.shutdownJVM()
+        
+    def setlogfile(self, filename): #takes in string
+        return self.apiInstance.setlogfile(filename) #returns int
+        
+    def GetVelocity(self):
+        return (self.GetVelocityX(), self.GetVelocityY(), self.GetVelocityZ())
         
     def GetVelocityX(self):
         return self.apiInstance.GetVelocityX()	#returns int
@@ -47,6 +55,42 @@ class OpenRocketInterface(object):
 
     def GetVelocityZ(self):
         return self.apiInstance.GetVelocityZ() #returns int
+        
+    def GetCordinateX(self):
+        return self.apiInstance.GetCordinateX()	#returns int
+
+    def GetCordinateY(self):
+        return self.apiInstance.GetCordinateY() #returns int
+
+    def GetCordinateZ(self):
+        return self.apiInstance.GetCordinateZ() #returns int
+        
+    def GetVelocityRotationX(self):
+        return self.apiInstance.GetVelocityRotationX()	#returns int
+
+    def GetVelocityRotationY(self):
+        return self.apiInstance.GetVelocityRotationY() #returns int
+
+    def GetVelocityRotationZ(self):
+        return self.apiInstance.GetVelocityRotationZ() #returns int
+        
+    def GetSimulationRunningTimeX(self):
+        return self.apiInstance.GetsimulationrunningtimeX() #returns double
+        
+    def GetBoolTumbling(self):
+        return self.apiInstance.GetBoolTumbling() #returns bool
+        
+    def GetBoolMotorIgnited(self):
+        return self.apiInstance.GetBoolMotorIgnited() #return bool
+        
+    def GetBoolApogeeReached(self):
+        return self.apiInstance.GetBoolApogeeReached() #return bool
+        
+    def GetBoolLaunchRodCleared(self);
+        return self.apiInstance.GetBoolLaunchRodCleared() #return bool
+        
+    def GetBoolLiftOff(self):
+        return self.apiInstance.GetBoolLiftoff() #return bool
 
     def IsSimulationRunning(self):
         return self.apiInstance.IsSimulationRunning() #returns bool
@@ -57,11 +101,11 @@ class OpenRocketInterface(object):
     def SimulationStep(self):
         return self.apiInstance.SimulationStep() #returns int
 
-    def SimulationStep(self, timestep): #takes in a double
-        return self.apiInstance.SimulationStep(timestep) #returns int
-
     def LoadRocket(self, szFileName): #takes in a string
         return self.apiInstance.LoadRocket(szFileName) #returns int
+        
+    def LoadRocket(self, szFileName, simtograb): #takes in a string and int
+        return self.apiInstance.LoadRocket(szFileName, simtograb) #returns int
 
     def RunSimulation(self):
         self.apiInstance.RunSimulation()
@@ -92,3 +136,12 @@ class OpenRocketInterface(object):
 
     def getDeploymentVelocity(self):
         return self.apiInstance.getDeploymentVelocity() #returns double
+        
+    def IsSimulationStagesRunning(self):
+        return self.apiInstance.IsSimulationStagesRunning() #returns bool
+        
+    def IsSimulationLoopRunning(self):
+        return self.apiInstance.IsSimulationLoopRunning() #returns int
+        
+    def StagesStep(self):
+        return self.apiInstance.StagesStep() #return int
