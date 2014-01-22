@@ -86,7 +86,7 @@ class OpenRocketInterface(object):
     def GetBoolApogeeReached(self):
         return self.apiInstance.GetBoolApogeeReached() #return bool
         
-    def GetBoolLaunchRodCleared(self);
+    def GetBoolLaunchRodCleared(self):
         return self.apiInstance.GetBoolLaunchRodCleared() #return bool
         
     def GetBoolLiftOff(self):
@@ -104,7 +104,7 @@ class OpenRocketInterface(object):
     def LoadRocket(self, szFileName): #takes in a string
         return self.apiInstance.LoadRocket(szFileName) #returns int
         
-    def LoadRocket(self, szFileName, simtograb): #takes in a string and int
+    def LoadRocketSpecific(self, szFileName, simtograb): #takes in a string and int
         return self.apiInstance.LoadRocket(szFileName, simtograb) #returns int
 
     def RunSimulation(self):
