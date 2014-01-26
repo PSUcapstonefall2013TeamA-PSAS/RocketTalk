@@ -21,11 +21,11 @@ args = parser.parse_args()
 
 try:
    fh = open(args.filename)
-except IOError:
-   print "file open error, sure it exists?"
-   raise
+except IOError, ex:
+   print "Caught the IOError:\n    ", ex
+   print "Verify the path to the .ork file"
+   quit()
 
-print args.filename + " successfully opened."
 RocketLoop.RocketLoop(args.filename)
 #todo: sanity check -s
 #todo: sanity check -fc, then convert to IP address

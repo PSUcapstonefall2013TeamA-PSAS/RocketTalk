@@ -4,24 +4,35 @@ from config import JAR_PATH as classpath
 from config import JVM as jvm
 try:
    fh = open(classpath)
-except IOError:
+except IOError, ex:
+   print "Caught the IOError:\n    ", ex
    print "Verify the path to openrocket.jar in config.py"
-   raise
+   quit()
 try:
    fh = open(jvm)
-except IOError:
+except IOError, ex:
+   print "Caught the IOError:\n    ", ex
    print "Verify the path to the jvm in config.py"
-   raise
+   quit()
 
 class OpenRocketInterface(object):
     def __init__(self):
         jpype.startJVM(jvm, "-Djava.class.path=%s" % classpath)
         SwingStartup = jpype.JClass('net.sf.openrocket.startup.SwingStartup') 
-	SwingStartup.initializeLogging()
+        SwingStartup.initializeLogging()
 
 #        package = jpype.JPackage('net').sf.openrocket.startup
 #        OpenRocketAPI = package.OpenRocketAPI
-        OpenRocketAPI = jpype.JClass('net.sf.openrocket.startup.OpenRocketAPI') 
+        openRocketAPIClass = 'net.sf.openrocket.startup.OpenRocketAPI'
+        try:
+            OpenRocketAPI = jpype.JClass(openRocketAPIClass)
+        except jpype.JavaException, ex:
+            if ex.message() == "Class " + openRocketAPIClass + " not found":
+                print "Caught the runtime exception:\n     ", ex.message()
+                print "Ensure that you are using a version of OpenRocket with this class"
+            else:
+                print "Caught the runtime exception:\n     ", ex.message()
+            quit()
         self.apiInstance = OpenRocketAPI()
     def GetTimeStep(self):
         return self.apiInstance.GetTimeStep()
