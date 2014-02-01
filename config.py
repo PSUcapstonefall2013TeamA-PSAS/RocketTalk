@@ -1,7 +1,8 @@
 #Path to openrocket jar file
-JAR_PATH = "/home/username/openrocket.git/swing/build/jar/OpenRocket.jar"
+JAR_PATH = "/home/panman/desk/src/openrocket/swing/build/jar/OpenRocket.jar"
 # PATH to libjvm.so
-JVM = "/usr/lib/jvm/jdk-7-oracle-x64/jre/lib/amd64/server/libjvm.so"
+JVM = "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so"
+JAVA_HOME = "/usr/lib/jvm/java-7-oracle/jre/"
 
 #This service
 WEBSERVICE_PORT = 5000
