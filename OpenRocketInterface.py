@@ -34,38 +34,41 @@ class OpenRocketInterface(object):
         self.apiInstance = OpenRocketAPI()
     
         
-    def GetTimeStep(self):
-        return self.apiInstance.GetTimeStep();
-    
-    def GetItteration(self):
-        return self.apiInstance.GetItteration();
-            
     def cleanup(self):
         jpype.shutdownJVM()
         
     def setlogfile(self, filename):  # takes in string
         return self.apiInstance.setlogfile(filename)  # returns int
         
-    def GetFlightData(self):
-        FlightData = self.apiInstance.GetFlightData()
-        return FlightData
-    
     def GetFlightDataStep(self):
         flightDataStep = self.apiInstance.GetFlightDataStep()
         return flightDataStep
+
+    def GetTimeStep(self):
+        return self.apiInstance.GetTimeStep();
     
+    def GetItteration(self):
+        return self.apiInstance.GetItteration();
+                
     def GetValue(self, flightDataStep, d_type):
         flightdatatype = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
-        type_dic = { 'TYPE_TIME': flightdatatype.TYPE_TIME,
+        type_dic = { 
+        'TYPE_TIME': flightdatatype.TYPE_TIME,
         'TYPE_ALTITUDE': flightdatatype.TYPE_ALTITUDE,
         'TYPE_VELOCITY_Z': flightdatatype.TYPE_VELOCITY_Z,
         'TYPE_ACCELERATION_Z': flightdatatype.TYPE_ACCELERATION_Z,
         'TYPE_VELOCITY_TOTAL': flightdatatype.TYPE_VELOCITY_TOTAL,
         'TYPE_ACCELERATION_TOTAL': flightdatatype.TYPE_ACCELERATION_TOTAL,
+        'TYPE_ACCELERATION_LINEAR_X': flightdatatype.TYPE_ACCELERATION_LINEAR_X,
+        'TYPE_ACCELERATION_LINEAR_Y': flightdatatype.TYPE_ACCELERATION_LINEAR_Y,
+        'TYPE_ACCELERATION_LINEAR_Z': flightdatatype.TYPE_ACCELERATION_LINEAR_Z,
+        'TYPE_POSITION_Z': flightdatatype.TYPE_POSITION_Z,
         'TYPE_POSITION_X': flightdatatype.TYPE_POSITION_X,
         'TYPE_POSITION_Y': flightdatatype.TYPE_POSITION_Y,
         'TYPE_POSITION_XY': flightdatatype.TYPE_POSITION_XY,
         'TYPE_POSITION_DIRECTION': flightdatatype.TYPE_POSITION_DIRECTION,
+        'TYPE_VELOCITY_X': flightdatatype.TYPE_VELOCITY_X,
+        'TYPE_VELOCITY_Y': flightdatatype.TYPE_VELOCITY_Y,
         'TYPE_VELOCITY_XY': flightdatatype.TYPE_VELOCITY_XY,
         'TYPE_ACCELERATION_XY': flightdatatype.TYPE_ACCELERATION_XY,
         'TYPE_LATITUDE': flightdatatype.TYPE_LATITUDE,
@@ -101,6 +104,9 @@ class OpenRocketInterface(object):
         'TYPE_PITCH_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_PITCH_DAMPING_MOMENT_COEFF,
         'TYPE_YAW_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_YAW_DAMPING_MOMENT_COEFF,
         'TYPE_CORIOLIS_ACCELERATION': flightdatatype.TYPE_CORIOLIS_ACCELERATION,
+        'TYPE_CORIOLIS_ACCELERATION_X': flightdatatype.TYPE_CORIOLIS_ACCELERATION_X,
+        'TYPE_CORIOLIS_ACCELERATION_Y': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Y,
+        'TYPE_CORIOLIS_ACCELERATION_Z': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Z,
         'TYPE_REFERENCE_LENGTH': flightdatatype.TYPE_REFERENCE_LENGTH,
         'TYPE_REFERENCE_AREA': flightdatatype.TYPE_REFERENCE_AREA,
         'TYPE_ORIENTATION_THETA': flightdatatype.TYPE_ORIENTATION_THETA,
