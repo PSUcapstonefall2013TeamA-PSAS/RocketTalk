@@ -51,6 +51,14 @@ class OpenRocketInterface(object):
         return self.apiInstance.GetItteration();
                 
     def GetValue(self, flightDataStep, d_type):
+        '''
+        These values correlated to the types found in 
+        openrocket.simulation.FlightDataType
+        
+        @param flightDataStep   this object is created using GetFlightDataStep
+        @param d_type           string matching a flightdatatype.
+        '''
+        #openrocket.simulation.FlightDataType depends on resources.I10n.messages.properties
         flightdatatype = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
         type_dic = { 
         'TYPE_TIME': flightdatatype.TYPE_TIME,
@@ -62,6 +70,9 @@ class OpenRocketInterface(object):
         'TYPE_ACCELERATION_LINEAR_X': flightdatatype.TYPE_ACCELERATION_LINEAR_X,
         'TYPE_ACCELERATION_LINEAR_Y': flightdatatype.TYPE_ACCELERATION_LINEAR_Y,
         'TYPE_ACCELERATION_LINEAR_Z': flightdatatype.TYPE_ACCELERATION_LINEAR_Z,
+        'TYPE_ACCELERATION_ANGULAR_X': flightdatatype.TYPE_ACCELERATION_ANGULAR_X,
+        'TYPE_ACCELERATION_ANGULAR_Y': flightdatatype.TYPE_ACCELERATION_ANGULAR_Y,
+        'TYPE_ACCELERATION_ANGULAR_Z': flightdatatype.TYPE_ACCELERATION_ANGULAR_Z,
         'TYPE_POSITION_Z': flightdatatype.TYPE_POSITION_Z,
         'TYPE_POSITION_X': flightdatatype.TYPE_POSITION_X,
         'TYPE_POSITION_Y': flightdatatype.TYPE_POSITION_Y,
@@ -120,15 +131,6 @@ class OpenRocketInterface(object):
         }
         TYPE = type_dic.get(d_type)
         value = flightDataStep.get(TYPE)
-        return value
-    
-    def GetTest(self, flightDataStep):
-        # FlightDataType = jpype.JClass("net.sf.openrocket.simulation.FlightDataType$FlightDataType")
-        # fdt = FlightDataType()
-        flightdatatype = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
-         
-        # FlightDataType = jpype.KEYWORDS("net.sf.openrocket.simulation.FlightDataType.TYPE_ACCELERATION_TOTAL")
-        value = flightDataStep.get(flightdatatype.TYPE_TIME)
         return value
         
     def GetVelocity(self):

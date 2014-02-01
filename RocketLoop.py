@@ -19,7 +19,11 @@ def RocketLoop(orkFile, sim_index=None, host=None):
             iteration = OpenRocket.SimulationStep()
             timestep = OpenRocket.GetTimeStep()
             flightDataStep = OpenRocket.GetFlightDataStep()
-            
+            #Just looking at some values here.
+            v_tt  = OpenRocket.GetValue(flightDataStep,'TYPE_TIME')
+            v_Aax = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_ANGULAR_X')
+            v_Aay = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_ANGULAR_Y')
+            v_Aaz = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_ANGULAR_Z')
 
             #This may well be the right way to get accel, i just wanted
             #To play with the new stuff.                
