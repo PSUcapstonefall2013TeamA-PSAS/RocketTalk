@@ -12,6 +12,9 @@ parser.add_argument("-s", type=int, metavar='index', dest="sim_index",
 parser.add_argument("--fc", metavar='IP address',
                     default=None, dest="fc_IP",
                     help="Override configured IP address of fc")
+parser.add_argument("--ts", metavar='Time Step',
+                    default='default', dest='time_step',
+                    help="Set time step for simulation.")
 args = parser.parse_args()
 
 
@@ -37,7 +40,12 @@ if args.sim_index != None:
 if args.fc_IP:
   args.fc_IP = socket.gethostbyname(args.fc_IP)
 
+if args.time_step:
+    if args.time_step != 'default':
+       if args.time_step != 'realtime':
+           print 'Invalid time step, enter default or realtime'
+           quit()
 
 #Call Rocketloop
-RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP)
+RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step)
 
