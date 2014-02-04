@@ -27,7 +27,7 @@ except IOError, ex:
   quit()
 
 # sanity check -s
-if args.sim_index:
+if args.sim_index != None:
   if args.sim_index < 1:
     print "Invalid simulation index, enter index > 0 please."
     quit()

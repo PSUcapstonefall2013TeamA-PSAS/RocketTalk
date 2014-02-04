@@ -15,7 +15,8 @@ def RocketLoop(orkFile, sim_index=None, host=None):
     OpenRocket = API.OpenRocketInterface()
     OpenRocket.getDeploymentVelocity()
     if sim_index != None:
-        OpenRocket.LoadRocket(orkFile, sim_index)
+        sim_index -= 1 #api seems to use zero indexing, whereas the simulation doesn't
+        OpenRocket.LoadRocketSpecific(orkFile, sim_index)
     else:
         OpenRocket.LoadRocket(orkFile)
     OpenRocket.RunSimulation()
