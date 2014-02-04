@@ -11,7 +11,7 @@ def VelocityToAccel(oldV, newV, timestep):
     return (x,y,z)
     
 def RocketLoop(orkFile, sim_index=None, host=None):
-    adis = ADIS.RocketPacket()
+    adis = ADIS.RocketPacket(host)
     OpenRocket = API.OpenRocketInterface()
     OpenRocket.getDeploymentVelocity()
     if sim_index != None:

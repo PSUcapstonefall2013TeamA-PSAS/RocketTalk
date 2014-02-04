@@ -33,10 +33,20 @@ ADIS_Message = struct.Struct('!12h')
 
 class RocketPacket(object):
 
-    def __init__(self):
+    def __init__(self, ip):
         # Open socket and bind to address
+
+        if ip is None:
+          ip = config.FC_IP
+
         self.ADISsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.ADISsocket.bind(('0.0.0.0', config.ADIS_TX_PORT))
+        self.ADISsocket.bind((ip, config.ADIS_TX_PORT))
+
+    #@classmethod
+    #def withsocket(cls, ip):
+        #initialize rocket packet with a passed IP
+     #   self.
+      #  return(cls)
 
     def ADISify_acc(self, acc):
         acc = json.loads(acc)
