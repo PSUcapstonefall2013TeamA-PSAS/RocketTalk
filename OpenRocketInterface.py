@@ -1,19 +1,30 @@
 #!/usr/bin/python
-import jpype
-from config import JAR_PATH as classpath
-from config import JVM as jvm
 try:
-   fh = open(classpath)
-except IOError, ex:
-   print "Caught the IOError:\n    ", ex
-   print "Verify the path to openrocket.jar in config.py"
-   quit()
+    import jpype
+except:
+    print 'Jpype is required to use the OpenRocketInterface class'
+    print 'Install Jpype using the command:'
+    print '  aptitude install python-jpype\n'
+	
+try:	
+    from config import JAR_PATH as classpath
+    from config import JVM as jvm
+except:
+    print 'Not configured.\n'
+    print 'Copy config.py_dist to config.py and fill in your settings\n'
+    quit()
 try:
-   fh = open(jvm)
+    fh = open(classpath)
 except IOError, ex:
-   print "Caught the IOError:\n    ", ex
-   print "Verify the path to the jvm in config.py"
-   quit()
+    print "Caught the IOError:\n    ", ex
+    print "Verify the path to openrocket.jar in config.py"
+    quit()
+try:
+    fh = open(jvm)
+except IOError, ex:
+    print "Caught the IOError:\n    ", ex
+    print "Verify the path to the jvm in config.py"
+    quit()
 
 class OpenRocketInterface(object):
     def __init__(self):

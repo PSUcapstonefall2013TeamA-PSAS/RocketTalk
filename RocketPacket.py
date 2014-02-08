@@ -2,9 +2,13 @@ import socket
 import struct
 import time
 import json
-import config
 from random import gauss
-
+try:
+	import config
+except:
+    print 'Not configured.\n'
+    print 'Copy config.py_dist to config.py and fill in your settings\n'
+    quit()
 '''
 Packet Structure: 
     # Power
