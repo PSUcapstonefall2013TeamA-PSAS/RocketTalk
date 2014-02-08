@@ -228,7 +228,9 @@ class OpenRocketInterface(object):
         }
         TYPE = type_dic.get(d_type)
         value = self.apiInstance.SetValue(TYPE, value)
-        return 0
+    
+    def SetMinTimeStep(self, timestep):
+        self.apiInstance.SetMinTimeStep(timestep)
  
     def GetVelocity(self):
         return (self.GetVelocityX(), self.GetVelocityY(), self.GetVelocityZ())
@@ -322,8 +324,7 @@ class OpenRocketInterface(object):
 
     def getDeploymentVelocity(self):
         return self.apiInstance.getDeploymentVelocity()  # returns double
-    def SetTimeStep(self, timestep):
-        return self.apiInstance.SetTimeStep(timestep)
+    
         
     def IsSimulationStagesRunning(self):
         return self.apiInstance.IsSimulationStagesRunning()  # returns bool

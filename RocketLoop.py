@@ -24,12 +24,6 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
     OpenRocket.RunSimulation()
     OpenRocket.StartSimulation()
 
-    sleepTime = 0
-    while not OpenRocket.IsSimulationStagesRunning():
-      while not OpenRocket.IsSimulationLoopRunning():
-        sleep(0.05)
-        #Wait until simulation is loaded
-
     print "Starting Simulation"
     if time_step == 'default':
        while OpenRocket.IsSimulationStagesRunning():
@@ -65,14 +59,12 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
     elif time_step == 'realtime':
        actualTime = time.time()
        simTime = 0
-       timestep = 0.05
 
-       #Ignored
-       OpenRocket.SetValue('TYPE_TIME_STEP', timestep)
-       
+       OpenRocket.SetMinTimeStep(0.05)  
+
        while OpenRocket.IsSimulationStagesRunning():
          while OpenRocket.IsSimulationLoopRunning():
-            stepTimer = timestep + time.time()
+            stepTimer = OpenRocket.GetTimeStep() + time.time()
             simTime = OpenRocket.GetSimulationRunningTimeX()
 
             flightDataStep = OpenRocket.GetFlightDataStep()
@@ -104,7 +96,7 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
                     p[i] = 0
                                                 
             sleepTime = sleepTime + stepTimer - time.time()
-            if sleepTime > 1:
+            if sleepTime > 0.25:
                time.sleep(sleepTime)
                sleepTime = 0
             
