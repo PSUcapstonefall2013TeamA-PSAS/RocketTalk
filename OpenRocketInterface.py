@@ -291,10 +291,24 @@ class OpenRocketInterface(object):
         return self.apiInstance.SimulationStep()  # returns int
 
     def LoadRocket(self, szFileName):  # takes in a string
-        return self.apiInstance.LoadRocket(szFileName)  # returns int
-        
+        self.LoadRocketSpecific(szFileName, 1)
+            
     def LoadRocketSpecific(self, szFileName, simtograb):  # takes in a string and int
-        return self.apiInstance.LoadRocket(szFileName, simtograb)  # returns int
+        errorCode = self.apiInstance.LoadRocket(szFileName, simtograb)
+        if (errorCode == -1):
+            print "Oops! No simulations available in this file."
+            quit()
+        elif (errorCode == -2):
+            print "Woops! You asked for a simulation not present in this file."
+            quit()
+        elif (errorCode == -3):
+            print "Uh Oh! Simulation data is not present in this simulation."
+            quit()
+        elif (errorCode == -4):
+            print "Oh No! Java RocketLoadException thrown"
+            quit()
+        else:
+            print "Successfully loaded rocket simulation data!!!"
 
     def RunSimulation(self):
         self.apiInstance.RunSimulation()
