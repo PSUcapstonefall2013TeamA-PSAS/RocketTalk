@@ -59,6 +59,7 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
     elif time_step == 'realtime':
        actualTime = time.time()
        simTime = 0
+       sleepTime = 0
 
        OpenRocket.SetMinTimeStep(0.05)  
 
