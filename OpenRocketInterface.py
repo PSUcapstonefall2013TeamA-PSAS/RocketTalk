@@ -264,7 +264,7 @@ class OpenRocketInterface(object):
         return self.apiInstance.GetVelocityRotationZ()  # returns int
         
     def GetSimulationRunningTime(self):
-        return self.apiInstance.GetsimulationrunningtimeX()  # returns double
+        return self.apiInstance.Getsimulationrunningtime()  # returns double
         
     def GetBoolTumbling(self):
         return self.apiInstance.GetBoolTumbling()  # returns bool
