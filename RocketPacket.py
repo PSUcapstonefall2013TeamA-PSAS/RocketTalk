@@ -2,6 +2,7 @@ import socket
 import struct
 import time
 import json
+import math
 from random import gauss
 try:
 	import config
@@ -67,6 +68,10 @@ class RocketPacket(object):
     def send_message(self, p, data=None):
         if data != None:
             p[4], p[5], p[6] = self.ADISify_acc(data)
+        
+        for i in range(0, 11):
+            if math.isnan(p[i]):
+                p[i] = 0
 
         packet = ADIS_Message.pack(*p)
 

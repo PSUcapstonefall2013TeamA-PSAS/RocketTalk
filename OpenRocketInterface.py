@@ -147,6 +147,7 @@ class OpenRocketInterface(object):
         TYPE = type_dic.get(d_type)
         value = flightDataStep.get(TYPE)
         return value
+
     def SetValue(self, d_type, value):
         '''
         These values correlated to the types found in 
@@ -262,7 +263,7 @@ class OpenRocketInterface(object):
     def GetVelocityRotationZ(self):
         return self.apiInstance.GetVelocityRotationZ()  # returns int
         
-    def GetSimulationRunningTimeX(self):
+    def GetSimulationRunningTime(self):
         return self.apiInstance.GetsimulationrunningtimeX()  # returns double
         
     def GetBoolTumbling(self):

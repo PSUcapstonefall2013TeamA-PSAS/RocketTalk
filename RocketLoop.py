@@ -66,7 +66,7 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
        while OpenRocket.IsSimulationStagesRunning():
          while OpenRocket.IsSimulationLoopRunning():
             stepTimer = OpenRocket.GetTimeStep() + time.time()
-            simTime = OpenRocket.GetSimulationRunningTimeX()
+            simTime = OpenRocket.GetSimulationRunningTime()
 
             flightDataStep = OpenRocket.GetFlightDataStep()
             iteration = OpenRocket.SimulationStep()
@@ -92,10 +92,6 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
             p[5] = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_Y')
             p[6] = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_Z')
             
-            for i in range(0, 11):
-                if math.isnan(p[i]):
-                    p[i] = 0
-                                                
             sleepTime = sleepTime + stepTimer - time.time()
             if sleepTime > 0.25:
                time.sleep(sleepTime)
