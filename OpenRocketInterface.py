@@ -5,8 +5,8 @@ except:
     print 'Jpype is required to use the OpenRocketInterface class'
     print 'Install Jpype using the command:'
     print '  aptitude install python-jpype\n'
-	
-try:	
+
+try:
     from config import JAR_PATH as classpath
     from config import JVM as jvm
 except:
@@ -26,10 +26,11 @@ except IOError, ex:
     print "Verify the path to the jvm in config.py"
     quit()
 
+
 class OpenRocketInterface(object):
     def __init__(self):
         jpype.startJVM(jvm, "-Djava.class.path=%s" % classpath)
-        SwingStartup = jpype.JClass('net.sf.openrocket.startup.SwingStartup') 
+        SwingStartup = jpype.JClass('net.sf.openrocket.startup.SwingStartup')
         SwingStartup.initializeLogging()
         openRocketAPIClass = 'net.sf.openrocket.startup.OpenRocketAPI'
 
@@ -43,14 +44,84 @@ class OpenRocketInterface(object):
                 print "Caught the runtime exception:\n     ", ex.message()
             quit()
         self.apiInstance = OpenRocketAPI()
-    
-        
+        # openrocket.simulation.FlightDataType depends on resources.I10n.messages.properties
+        flightdatatype = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
+        self.type_dic = {
+            'TYPE_TIME': flightdatatype.TYPE_TIME,
+            'TYPE_ALTITUDE': flightdatatype.TYPE_ALTITUDE,
+            'TYPE_VELOCITY_Z': flightdatatype.TYPE_VELOCITY_Z,
+            'TYPE_ACCELERATION_Z': flightdatatype.TYPE_ACCELERATION_Z,
+            'TYPE_VELOCITY_TOTAL': flightdatatype.TYPE_VELOCITY_TOTAL,
+            'TYPE_ACCELERATION_TOTAL': flightdatatype.TYPE_ACCELERATION_TOTAL,
+            'TYPE_ACCELERATION_LINEAR_X': flightdatatype.TYPE_ACCELERATION_LINEAR_X,
+            'TYPE_ACCELERATION_LINEAR_Y': flightdatatype.TYPE_ACCELERATION_LINEAR_Y,
+            'TYPE_ACCELERATION_LINEAR_Z': flightdatatype.TYPE_ACCELERATION_LINEAR_Z,
+            'TYPE_ACCELERATION_ANGULAR_X': flightdatatype.TYPE_ACCELERATION_ANGULAR_X,
+            'TYPE_ACCELERATION_ANGULAR_Y': flightdatatype.TYPE_ACCELERATION_ANGULAR_Y,
+            'TYPE_ACCELERATION_ANGULAR_Z': flightdatatype.TYPE_ACCELERATION_ANGULAR_Z,
+            'TYPE_POSITION_Z': flightdatatype.TYPE_POSITION_Z,
+            'TYPE_POSITION_X': flightdatatype.TYPE_POSITION_X,
+            'TYPE_POSITION_Y': flightdatatype.TYPE_POSITION_Y,
+            'TYPE_POSITION_XY': flightdatatype.TYPE_POSITION_XY,
+            'TYPE_POSITION_DIRECTION': flightdatatype.TYPE_POSITION_DIRECTION,
+            'TYPE_VELOCITY_X': flightdatatype.TYPE_VELOCITY_X,
+            'TYPE_VELOCITY_Y': flightdatatype.TYPE_VELOCITY_Y,
+            'TYPE_VELOCITY_XY': flightdatatype.TYPE_VELOCITY_XY,
+            'TYPE_ACCELERATION_XY': flightdatatype.TYPE_ACCELERATION_XY,
+            'TYPE_LATITUDE': flightdatatype.TYPE_LATITUDE,
+            'TYPE_LONGITUDE': flightdatatype.TYPE_LONGITUDE,
+            'TYPE_GRAVITY': flightdatatype.TYPE_GRAVITY,
+            'TYPE_AOA': flightdatatype.TYPE_AOA,
+            'TYPE_ROLL_RATE': flightdatatype.TYPE_ROLL_RATE,
+            'TYPE_PITCH_RATE': flightdatatype.TYPE_PITCH_RATE,
+            'TYPE_YAW_RATE': flightdatatype.TYPE_YAW_RATE,
+            'TYPE_MASS': flightdatatype.TYPE_MASS,
+            'TYPE_PROPELLANT_MASS': flightdatatype.TYPE_PROPELLANT_MASS,
+            'TYPE_LONGITUDINAL_INERTIA': flightdatatype.TYPE_LONGITUDINAL_INERTIA,
+            'TYPE_ROTATIONAL_INERTIA': flightdatatype.TYPE_ROTATIONAL_INERTIA,
+            'TYPE_CP_LOCATION': flightdatatype.TYPE_CP_LOCATION,
+            'TYPE_CG_LOCATION': flightdatatype.TYPE_CG_LOCATION,
+            'TYPE_STABILITY': flightdatatype.TYPE_STABILITY,
+            'TYPE_MACH_NUMBER': flightdatatype.TYPE_MACH_NUMBER,
+            'TYPE_REYNOLDS_NUMBER': flightdatatype.TYPE_REYNOLDS_NUMBER,
+            'TYPE_THRUST_FORCE': flightdatatype.TYPE_THRUST_FORCE,
+            'TYPE_DRAG_FORCE': flightdatatype.TYPE_DRAG_FORCE,
+            'TYPE_DRAG_COEFF': flightdatatype.TYPE_DRAG_COEFF,
+            'TYPE_AXIAL_DRAG_COEFF': flightdatatype.TYPE_AXIAL_DRAG_COEFF,
+            'TYPE_FRICTION_DRAG_COEFF': flightdatatype.TYPE_FRICTION_DRAG_COEFF,
+            'TYPE_PRESSURE_DRAG_COEFF': flightdatatype.TYPE_PRESSURE_DRAG_COEFF,
+            'TYPE_BASE_DRAG_COEFF': flightdatatype.TYPE_BASE_DRAG_COEFF,
+            'TYPE_NORMAL_FORCE_COEFF': flightdatatype.TYPE_NORMAL_FORCE_COEFF,
+            'TYPE_PITCH_MOMENT_COEFF': flightdatatype.TYPE_PITCH_MOMENT_COEFF,
+            'TYPE_YAW_MOMENT_COEFF': flightdatatype.TYPE_YAW_MOMENT_COEFF,
+            'TYPE_SIDE_FORCE_COEFF': flightdatatype.TYPE_SIDE_FORCE_COEFF,
+            'TYPE_ROLL_MOMENT_COEFF': flightdatatype.TYPE_ROLL_MOMENT_COEFF,
+            'TYPE_ROLL_FORCING_COEFF': flightdatatype.TYPE_ROLL_FORCING_COEFF,
+            'TYPE_ROLL_DAMPING_COEFF': flightdatatype.TYPE_ROLL_DAMPING_COEFF,
+            'TYPE_PITCH_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_PITCH_DAMPING_MOMENT_COEFF,
+            'TYPE_YAW_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_YAW_DAMPING_MOMENT_COEFF,
+            'TYPE_CORIOLIS_ACCELERATION': flightdatatype.TYPE_CORIOLIS_ACCELERATION,
+            'TYPE_CORIOLIS_ACCELERATION_X': flightdatatype.TYPE_CORIOLIS_ACCELERATION_X,
+            'TYPE_CORIOLIS_ACCELERATION_Y': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Y,
+            'TYPE_CORIOLIS_ACCELERATION_Z': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Z,
+            'TYPE_REFERENCE_LENGTH': flightdatatype.TYPE_REFERENCE_LENGTH,
+            'TYPE_REFERENCE_AREA': flightdatatype.TYPE_REFERENCE_AREA,
+            'TYPE_ORIENTATION_THETA': flightdatatype.TYPE_ORIENTATION_THETA,
+            'TYPE_ORIENTATION_PHI': flightdatatype.TYPE_ORIENTATION_PHI,
+            'TYPE_WIND_VELOCITY': flightdatatype.TYPE_WIND_VELOCITY,
+            'TYPE_AIR_TEMPERATURE': flightdatatype.TYPE_AIR_TEMPERATURE,
+            'TYPE_AIR_PRESSURE': flightdatatype.TYPE_AIR_PRESSURE,
+            'TYPE_SPEED_OF_SOUND': flightdatatype.TYPE_SPEED_OF_SOUND,
+            'TYPE_TIME_STEP': flightdatatype.TYPE_TIME_STEP,
+            'TYPE_COMPUTATION_TIME': flightdatatype.TYPE_COMPUTATION_TIME
+        }
+
     def cleanup(self):
         jpype.shutdownJVM()
-        
+
     def setlogfile(self, filename):  # takes in string
         return self.apiInstance.setlogfile(filename)  # returns int
-    
+
     def GetFlightData(self):
         flightDataBranch = self.apiInstance.GetFlightData()
         return flightDataBranch
@@ -60,182 +131,42 @@ class OpenRocketInterface(object):
         return flightDataStep
 
     def GetTimeStep(self):
-        return self.apiInstance.GetTimeStep();
-    
+        return self.apiInstance.GetTimeStep()
+
     def GetItteration(self):
-        return self.apiInstance.GetItteration();
-                
+        return self.apiInstance.GetItteration()
+
     def GetValue(self, flightDataStep, d_type):
         '''
-        These values correlated to the types found in 
+        These values correlated to the types found in
         openrocket.simulation.FlightDataType
-        
+
         @param flightDataStep   this object is created using GetFlightDataStep
         @param d_type           string matching a flightdatatype.
         '''
-        #openrocket.simulation.FlightDataType depends on resources.I10n.messages.properties
-        flightdatatype = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
-        type_dic = { 
-        'TYPE_TIME': flightdatatype.TYPE_TIME,
-        'TYPE_ALTITUDE': flightdatatype.TYPE_ALTITUDE,
-        'TYPE_VELOCITY_Z': flightdatatype.TYPE_VELOCITY_Z,
-        'TYPE_ACCELERATION_Z': flightdatatype.TYPE_ACCELERATION_Z,
-        'TYPE_VELOCITY_TOTAL': flightdatatype.TYPE_VELOCITY_TOTAL,
-        'TYPE_ACCELERATION_TOTAL': flightdatatype.TYPE_ACCELERATION_TOTAL,
-        'TYPE_ACCELERATION_LINEAR_X': flightdatatype.TYPE_ACCELERATION_LINEAR_X,
-        'TYPE_ACCELERATION_LINEAR_Y': flightdatatype.TYPE_ACCELERATION_LINEAR_Y,
-        'TYPE_ACCELERATION_LINEAR_Z': flightdatatype.TYPE_ACCELERATION_LINEAR_Z,
-        'TYPE_ACCELERATION_ANGULAR_X': flightdatatype.TYPE_ACCELERATION_ANGULAR_X,
-        'TYPE_ACCELERATION_ANGULAR_Y': flightdatatype.TYPE_ACCELERATION_ANGULAR_Y,
-        'TYPE_ACCELERATION_ANGULAR_Z': flightdatatype.TYPE_ACCELERATION_ANGULAR_Z,
-        'TYPE_POSITION_Z': flightdatatype.TYPE_POSITION_Z,
-        'TYPE_POSITION_X': flightdatatype.TYPE_POSITION_X,
-        'TYPE_POSITION_Y': flightdatatype.TYPE_POSITION_Y,
-        'TYPE_POSITION_XY': flightdatatype.TYPE_POSITION_XY,
-        'TYPE_POSITION_DIRECTION': flightdatatype.TYPE_POSITION_DIRECTION,
-        'TYPE_VELOCITY_X': flightdatatype.TYPE_VELOCITY_X,
-        'TYPE_VELOCITY_Y': flightdatatype.TYPE_VELOCITY_Y,
-        'TYPE_VELOCITY_XY': flightdatatype.TYPE_VELOCITY_XY,
-        'TYPE_ACCELERATION_XY': flightdatatype.TYPE_ACCELERATION_XY,
-        'TYPE_LATITUDE': flightdatatype.TYPE_LATITUDE,
-        'TYPE_LONGITUDE': flightdatatype.TYPE_LONGITUDE,
-        'TYPE_GRAVITY': flightdatatype.TYPE_GRAVITY,
-        'TYPE_AOA': flightdatatype.TYPE_AOA,
-        'TYPE_ROLL_RATE': flightdatatype.TYPE_ROLL_RATE,
-        'TYPE_PITCH_RATE': flightdatatype.TYPE_PITCH_RATE,
-        'TYPE_YAW_RATE': flightdatatype.TYPE_YAW_RATE,
-        'TYPE_MASS': flightdatatype.TYPE_MASS,
-        'TYPE_PROPELLANT_MASS': flightdatatype.TYPE_PROPELLANT_MASS,
-        'TYPE_LONGITUDINAL_INERTIA': flightdatatype.TYPE_LONGITUDINAL_INERTIA,
-        'TYPE_ROTATIONAL_INERTIA': flightdatatype.TYPE_ROTATIONAL_INERTIA,
-        'TYPE_CP_LOCATION': flightdatatype.TYPE_CP_LOCATION,
-        'TYPE_CG_LOCATION': flightdatatype.TYPE_CG_LOCATION,
-        'TYPE_STABILITY': flightdatatype.TYPE_STABILITY,
-        'TYPE_MACH_NUMBER': flightdatatype.TYPE_MACH_NUMBER,
-        'TYPE_REYNOLDS_NUMBER': flightdatatype.TYPE_REYNOLDS_NUMBER,
-        'TYPE_THRUST_FORCE': flightdatatype.TYPE_THRUST_FORCE,
-        'TYPE_DRAG_FORCE': flightdatatype.TYPE_DRAG_FORCE,
-        'TYPE_DRAG_COEFF': flightdatatype.TYPE_DRAG_COEFF,
-        'TYPE_AXIAL_DRAG_COEFF': flightdatatype.TYPE_AXIAL_DRAG_COEFF,
-        'TYPE_FRICTION_DRAG_COEFF': flightdatatype.TYPE_FRICTION_DRAG_COEFF,
-        'TYPE_PRESSURE_DRAG_COEFF': flightdatatype.TYPE_PRESSURE_DRAG_COEFF,
-        'TYPE_BASE_DRAG_COEFF': flightdatatype.TYPE_BASE_DRAG_COEFF,
-        'TYPE_NORMAL_FORCE_COEFF': flightdatatype.TYPE_NORMAL_FORCE_COEFF,
-        'TYPE_PITCH_MOMENT_COEFF': flightdatatype.TYPE_PITCH_MOMENT_COEFF,
-        'TYPE_YAW_MOMENT_COEFF': flightdatatype.TYPE_YAW_MOMENT_COEFF,
-        'TYPE_SIDE_FORCE_COEFF': flightdatatype.TYPE_SIDE_FORCE_COEFF,
-        'TYPE_ROLL_MOMENT_COEFF': flightdatatype.TYPE_ROLL_MOMENT_COEFF,
-        'TYPE_ROLL_FORCING_COEFF': flightdatatype.TYPE_ROLL_FORCING_COEFF,
-        'TYPE_ROLL_DAMPING_COEFF': flightdatatype.TYPE_ROLL_DAMPING_COEFF,
-        'TYPE_PITCH_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_PITCH_DAMPING_MOMENT_COEFF,
-        'TYPE_YAW_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_YAW_DAMPING_MOMENT_COEFF,
-        'TYPE_CORIOLIS_ACCELERATION': flightdatatype.TYPE_CORIOLIS_ACCELERATION,
-        'TYPE_CORIOLIS_ACCELERATION_X': flightdatatype.TYPE_CORIOLIS_ACCELERATION_X,
-        'TYPE_CORIOLIS_ACCELERATION_Y': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Y,
-        'TYPE_CORIOLIS_ACCELERATION_Z': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Z,
-        'TYPE_REFERENCE_LENGTH': flightdatatype.TYPE_REFERENCE_LENGTH,
-        'TYPE_REFERENCE_AREA': flightdatatype.TYPE_REFERENCE_AREA,
-        'TYPE_ORIENTATION_THETA': flightdatatype.TYPE_ORIENTATION_THETA,
-        'TYPE_ORIENTATION_PHI': flightdatatype.TYPE_ORIENTATION_PHI,
-        'TYPE_WIND_VELOCITY': flightdatatype.TYPE_WIND_VELOCITY,
-        'TYPE_AIR_TEMPERATURE': flightdatatype.TYPE_AIR_TEMPERATURE,
-        'TYPE_AIR_PRESSURE': flightdatatype.TYPE_AIR_PRESSURE,
-        'TYPE_SPEED_OF_SOUND': flightdatatype.TYPE_SPEED_OF_SOUND,
-        'TYPE_TIME_STEP': flightdatatype.TYPE_TIME_STEP,
-        'TYPE_COMPUTATION_TIME': flightdatatype.TYPE_COMPUTATION_TIME
-        }
-        TYPE = type_dic.get(d_type)
+
+        TYPE = self.type_dic.get(d_type)
         value = flightDataStep.get(TYPE)
         return value
 
     def SetValue(self, d_type, value):
         '''
-        These values correlated to the types found in 
+        These values correlated to the types found in
         openrocket.simulation.FlightDataType
-        
+
         @param flightDataStep   this object is created using GetFlightDataStep
         @param d_type           string matching a flightdatatype.
         '''
-        #openrocket.simulation.FlightDataType depends on resources.I10n.messages.properties
-        flightdatatype = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
-        type_dic = {
-        'TYPE_TIME': flightdatatype.TYPE_TIME,
-        'TYPE_ALTITUDE': flightdatatype.TYPE_ALTITUDE,
-        'TYPE_VELOCITY_Z': flightdatatype.TYPE_VELOCITY_Z,
-        'TYPE_ACCELERATION_Z': flightdatatype.TYPE_ACCELERATION_Z,
-        'TYPE_VELOCITY_TOTAL': flightdatatype.TYPE_VELOCITY_TOTAL,
-        'TYPE_ACCELERATION_TOTAL': flightdatatype.TYPE_ACCELERATION_TOTAL,
-        'TYPE_ACCELERATION_LINEAR_X': flightdatatype.TYPE_ACCELERATION_LINEAR_X,
-        'TYPE_ACCELERATION_LINEAR_Y': flightdatatype.TYPE_ACCELERATION_LINEAR_Y,
-        'TYPE_ACCELERATION_LINEAR_Z': flightdatatype.TYPE_ACCELERATION_LINEAR_Z,
-        'TYPE_ACCELERATION_ANGULAR_X': flightdatatype.TYPE_ACCELERATION_ANGULAR_X,
-        'TYPE_ACCELERATION_ANGULAR_Y': flightdatatype.TYPE_ACCELERATION_ANGULAR_Y,
-        'TYPE_ACCELERATION_ANGULAR_Z': flightdatatype.TYPE_ACCELERATION_ANGULAR_Z,
-        'TYPE_POSITION_Z': flightdatatype.TYPE_POSITION_Z,
-        'TYPE_POSITION_X': flightdatatype.TYPE_POSITION_X,
-        'TYPE_POSITION_Y': flightdatatype.TYPE_POSITION_Y,
-        'TYPE_POSITION_XY': flightdatatype.TYPE_POSITION_XY,
-        'TYPE_POSITION_DIRECTION': flightdatatype.TYPE_POSITION_DIRECTION,
-        'TYPE_VELOCITY_X': flightdatatype.TYPE_VELOCITY_X,
-        'TYPE_VELOCITY_Y': flightdatatype.TYPE_VELOCITY_Y,
-        'TYPE_VELOCITY_XY': flightdatatype.TYPE_VELOCITY_XY,
-        'TYPE_ACCELERATION_XY': flightdatatype.TYPE_ACCELERATION_XY,
-        'TYPE_LATITUDE': flightdatatype.TYPE_LATITUDE,
-        'TYPE_LONGITUDE': flightdatatype.TYPE_LONGITUDE,
-        'TYPE_GRAVITY': flightdatatype.TYPE_GRAVITY,
-        'TYPE_AOA': flightdatatype.TYPE_AOA,
-        'TYPE_ROLL_RATE': flightdatatype.TYPE_ROLL_RATE,
-        'TYPE_PITCH_RATE': flightdatatype.TYPE_PITCH_RATE,
-        'TYPE_YAW_RATE': flightdatatype.TYPE_YAW_RATE,
-        'TYPE_MASS': flightdatatype.TYPE_MASS,
-        'TYPE_PROPELLANT_MASS': flightdatatype.TYPE_PROPELLANT_MASS,
-        'TYPE_LONGITUDINAL_INERTIA': flightdatatype.TYPE_LONGITUDINAL_INERTIA,
-        'TYPE_ROTATIONAL_INERTIA': flightdatatype.TYPE_ROTATIONAL_INERTIA,
-        'TYPE_CP_LOCATION': flightdatatype.TYPE_CP_LOCATION,
-        'TYPE_CG_LOCATION': flightdatatype.TYPE_CG_LOCATION,
-        'TYPE_STABILITY': flightdatatype.TYPE_STABILITY,
-        'TYPE_MACH_NUMBER': flightdatatype.TYPE_MACH_NUMBER,
-        'TYPE_REYNOLDS_NUMBER': flightdatatype.TYPE_REYNOLDS_NUMBER,
-        'TYPE_THRUST_FORCE': flightdatatype.TYPE_THRUST_FORCE,
-        'TYPE_DRAG_FORCE': flightdatatype.TYPE_DRAG_FORCE,
-        'TYPE_DRAG_COEFF': flightdatatype.TYPE_DRAG_COEFF,
-        'TYPE_AXIAL_DRAG_COEFF': flightdatatype.TYPE_AXIAL_DRAG_COEFF,
-        'TYPE_FRICTION_DRAG_COEFF': flightdatatype.TYPE_FRICTION_DRAG_COEFF,
-        'TYPE_PRESSURE_DRAG_COEFF': flightdatatype.TYPE_PRESSURE_DRAG_COEFF,
-        'TYPE_BASE_DRAG_COEFF': flightdatatype.TYPE_BASE_DRAG_COEFF,
-        'TYPE_NORMAL_FORCE_COEFF': flightdatatype.TYPE_NORMAL_FORCE_COEFF,
-        'TYPE_PITCH_MOMENT_COEFF': flightdatatype.TYPE_PITCH_MOMENT_COEFF,
-        'TYPE_YAW_MOMENT_COEFF': flightdatatype.TYPE_YAW_MOMENT_COEFF,
-        'TYPE_SIDE_FORCE_COEFF': flightdatatype.TYPE_SIDE_FORCE_COEFF,
-        'TYPE_ROLL_MOMENT_COEFF': flightdatatype.TYPE_ROLL_MOMENT_COEFF,
-        'TYPE_ROLL_FORCING_COEFF': flightdatatype.TYPE_ROLL_FORCING_COEFF,
-        'TYPE_ROLL_DAMPING_COEFF': flightdatatype.TYPE_ROLL_DAMPING_COEFF,
-        'TYPE_PITCH_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_PITCH_DAMPING_MOMENT_COEFF,
-        'TYPE_YAW_DAMPING_MOMENT_COEFF': flightdatatype.TYPE_YAW_DAMPING_MOMENT_COEFF,
-        'TYPE_CORIOLIS_ACCELERATION': flightdatatype.TYPE_CORIOLIS_ACCELERATION,
-        'TYPE_CORIOLIS_ACCELERATION_X': flightdatatype.TYPE_CORIOLIS_ACCELERATION_X,
-        'TYPE_CORIOLIS_ACCELERATION_Y': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Y,
-        'TYPE_CORIOLIS_ACCELERATION_Z': flightdatatype.TYPE_CORIOLIS_ACCELERATION_Z,
-        'TYPE_REFERENCE_LENGTH': flightdatatype.TYPE_REFERENCE_LENGTH,
-        'TYPE_REFERENCE_AREA': flightdatatype.TYPE_REFERENCE_AREA,
-        'TYPE_ORIENTATION_THETA': flightdatatype.TYPE_ORIENTATION_THETA,
-        'TYPE_ORIENTATION_PHI': flightdatatype.TYPE_ORIENTATION_PHI,
-        'TYPE_WIND_VELOCITY': flightdatatype.TYPE_WIND_VELOCITY,
-        'TYPE_AIR_TEMPERATURE': flightdatatype.TYPE_AIR_TEMPERATURE,
-        'TYPE_AIR_PRESSURE': flightdatatype.TYPE_AIR_PRESSURE,
-        'TYPE_SPEED_OF_SOUND': flightdatatype.TYPE_SPEED_OF_SOUND,
-        'TYPE_TIME_STEP': flightdatatype.TYPE_TIME_STEP,
-        'TYPE_COMPUTATION_TIME': flightdatatype.TYPE_COMPUTATION_TIME
-        }
-        TYPE = type_dic.get(d_type)
+
+        TYPE = self.type_dic.get(d_type)
         value = self.apiInstance.SetValue(TYPE, value)
-    
+
     def SetMinTimeStep(self, timestep):
         self.apiInstance.SetMinTimeStep(timestep)
- 
+
     def GetVelocity(self):
         return (self.GetVelocityX(), self.GetVelocityY(), self.GetVelocityZ())
-        
+
     def GetVelocityX(self):
         return self.apiInstance.GetVelocityX()  # returns int
 
@@ -244,7 +175,7 @@ class OpenRocketInterface(object):
 
     def GetVelocityZ(self):
         return self.apiInstance.GetVelocityZ()  # returns int
-        
+
     def GetCordinateX(self):
         return self.apiInstance.GetCordinateX()  # returns int
 
@@ -253,7 +184,7 @@ class OpenRocketInterface(object):
 
     def GetCordinateZ(self):
         return self.apiInstance.GetCordinateZ()  # returns int
-        
+
     def GetVelocityRotationX(self):
         return self.apiInstance.GetVelocityRotationX()  # returns int
 
@@ -262,22 +193,22 @@ class OpenRocketInterface(object):
 
     def GetVelocityRotationZ(self):
         return self.apiInstance.GetVelocityRotationZ()  # returns int
-        
+
     def GetSimulationRunningTime(self):
         return self.apiInstance.Getsimulationrunningtime()  # returns double
-        
+
     def GetBoolTumbling(self):
         return self.apiInstance.GetBoolTumbling()  # returns bool
-        
+
     def GetBoolMotorIgnited(self):
         return self.apiInstance.GetBoolMotorIgnited()  # return bool
-        
+
     def GetBoolApogeeReached(self):
         return self.apiInstance.GetBoolApogeeReached()  # return bool
-        
+
     def GetBoolLaunchRodCleared(self):
         return self.apiInstance.GetBoolLaunchRodCleared()  # return bool
-        
+
     def GetBoolLiftOff(self):
         return self.apiInstance.GetBoolLiftoff()  # return bool
 
@@ -339,13 +270,12 @@ class OpenRocketInterface(object):
 
     def getDeploymentVelocity(self):
         return self.apiInstance.getDeploymentVelocity()  # returns double
-    
-        
+
     def IsSimulationStagesRunning(self):
         return self.apiInstance.IsSimulationStagesRunning()  # returns bool
-        
+
     def IsSimulationLoopRunning(self):
         return self.apiInstance.IsSimulationLoopRunning()  # returns int
-        
+
     def StagesStep(self):
         return self.apiInstance.StagesStep()  # return int
