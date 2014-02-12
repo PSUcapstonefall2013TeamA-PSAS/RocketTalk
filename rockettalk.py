@@ -7,15 +7,14 @@ import RocketLoop
 
 parser = argparse.ArgumentParser(description="The RocketTalk program")
 parser.add_argument("filename", metavar="filename.ork",
-                    help="input .ork simulation file")
+                    help="Input .ork simulation file")
 parser.add_argument("-s", type=int, metavar='index', dest="sim_index",
-                    help="specify index of specific simulation")
+                    help="Specify index of specific simulation")
 parser.add_argument("--fc", metavar='IP address',
                     default=None, dest="fc_IP",
                     help="Override configured IP address of fc")
-parser.add_argument("--ts", metavar='Time Step',
-                    default='default', dest='time_step',
-                    help="Set time step for simulation.")
+parser.add_argument("-rt", default='default', const='realtime', dest='time_step',
+                    action='store_const', help="Sets time step interval to realtime")
 args = parser.parse_args()
 
 
@@ -40,12 +39,6 @@ if args.sim_index is not None:
 #this throws an error if it's not a valid hostname, otherwise converts to IP
 if args.fc_IP:
     args.fc_IP = socket.gethostbyname(args.fc_IP)
-
-if args.time_step:
-    if args.time_step != 'default':
-        if args.time_step != 'realtime':
-            print 'Invalid time step, enter default or realtime'
-            quit()
 
 #Call Rocketloop
 RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step)

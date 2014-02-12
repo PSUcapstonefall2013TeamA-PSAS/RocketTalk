@@ -136,17 +136,16 @@ class OpenRocketInterface(object):
     def GetItteration(self):
         return self.apiInstance.GetItteration()
 
-    def GetValue(self, flightDataStep, d_type):
+    def GetValue(self, d_type):
         '''
         These values correlated to the types found in
         openrocket.simulation.FlightDataType
 
-        @param flightDataStep   this object is created using GetFlightDataStep
         @param d_type           string matching a flightdatatype.
         '''
 
         TYPE = self.type_dic.get(d_type)
-        value = flightDataStep.get(TYPE)
+        value = self.apiInstance.GetValue(TYPE)
         return value
 
     def SetValue(self, d_type, value):
@@ -154,8 +153,8 @@ class OpenRocketInterface(object):
         These values correlated to the types found in
         openrocket.simulation.FlightDataType
 
-        @param flightDataStep   this object is created using GetFlightDataStep
         @param d_type           string matching a flightdatatype.
+        @param value            the value to be assigned
         '''
 
         TYPE = self.type_dic.get(d_type)
@@ -223,7 +222,7 @@ class OpenRocketInterface(object):
 
     def LoadRocket(self, szFileName):  # takes in a string
         self.LoadRocketSpecific(szFileName, 1)
-            
+
     def LoadRocketSpecific(self, szFileName, simtograb):  # takes in a string and int
         errorCode = self.apiInstance.LoadRocket(szFileName, simtograb)
         if (errorCode == -1):
