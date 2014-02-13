@@ -8,13 +8,11 @@ import time
 def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
     adis = ADIS.RocketPacket(host)
     OpenRocket = API.OpenRocketInterface()
-    OpenRocket.getDeploymentVelocity()
 
     if sim_index is not None:
         OpenRocket.LoadRocketSpecific(orkFile, sim_index)
     else:
         OpenRocket.LoadRocket(orkFile)
-    OpenRocket.RunSimulation()
     OpenRocket.StartSimulation()
 
     print "Starting simulation"
@@ -34,7 +32,7 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
 
         while OpenRocket.IsSimulationStagesRunning():
             while OpenRocket.IsSimulationLoopRunning():
-                stepTimer = OpenRocket.GetTimeStep() + time.time()
+                stepTimer = OpenRocket.GetValue('TYPE_TIME_STEP') + time.time()
                 simTime = OpenRocket.GetSimulationRunningTime()
 
                 p = GetData(OpenRocket)
