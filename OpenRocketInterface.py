@@ -5,7 +5,7 @@ except:
     print 'Jpype is required to use the OpenRocketInterface class'
     print 'Install Jpype using the command:'
     print '  aptitude install python-jpype\n'
-
+    quit()
 try:
     from config import JAR_PATH as classpath
     from config import JVM as jvm
