@@ -56,13 +56,6 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
 def GetData(OpenRocket):
     iteration = OpenRocket.SimulationStep()
 
-    # remove?
-    #Just looking at some values here.
-    # v_tt = OpenRocket.GetValue(flightDataStep, 'TYPE_TIME')
-    # v_Aax = OpenRocket.GetValue(flightDataStep, 'TYPE_ACCELERATION_ANGULAR_X')
-    # v_Aay = OpenRocket.GetValue(flightDataStep, 'TYPE_ACCELERATION_ANGULAR_Y')
-    # v_Aaz = OpenRocket.GetValue(flightDataStep, 'TYPE_ACCELERATION_ANGULAR_Z')
-
     p = [0]*12
     # Gyro
     p[1] = OpenRocket.GetValue('TYPE_POSITION_X')

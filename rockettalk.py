@@ -10,7 +10,7 @@ parser.add_argument("filename", metavar="filename.ork",
                     help="Input .ork simulation file")
 parser.add_argument("-s", type=int, metavar='index', dest="sim_index",
                     help="Specify index of specific simulation")
-parser.add_argument("--fc", metavar='IP address',
+parser.add_argument("-fc", metavar='IP address',
                     default=None, dest="fc_IP",
                     help="Override configured IP address of fc")
 parser.add_argument("-rt", default='default', const='realtime', dest='time_step',
