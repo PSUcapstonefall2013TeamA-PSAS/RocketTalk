@@ -166,7 +166,8 @@ class OpenRocketInterface(object):
 
     def StartSimulation(self):
         return self.apiInstance.StartSimulation()  # returns int
-
+    def SetRandomSeed(self, random_seed):
+        self.apiInstance.SetRandomSeed(random_seed)
     def SimulationStep(self):
         return self.apiInstance.SimulationStep()  # returns int
 

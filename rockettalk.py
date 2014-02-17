@@ -15,6 +15,8 @@ parser.add_argument("-fc", metavar='IP address',
                     help="Override configured IP address of fc")
 parser.add_argument("-rt", default='default', const='realtime', dest='time_step',
                     action='store_const', help="Sets time step interval to realtime")
+parser.add_argument("-d", type=int, default=0, metavar='Random Seed', dest='rand_seed',
+                     help="Use a constant random seed for deterministic results")
 args = parser.parse_args()
 
 
@@ -41,4 +43,4 @@ if args.fc_IP:
     args.fc_IP = socket.gethostbyname(args.fc_IP)
 
 #Call Rocketloop
-RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step)
+RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed)

@@ -5,10 +5,10 @@ import time
 
 
 #Main simulation loop
-def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
+def RocketLoop(orkFile, sim_index=None, host=None, time_step='default', random_seed=0):
     adis = ADIS.RocketPacket(host)
     OpenRocket = API.OpenRocketInterface()
-
+    OpenRocket.SetRandomSeed(random_seed)
     if sim_index is not None:
         OpenRocket.LoadRocketSpecific(orkFile, sim_index)
     else:
@@ -58,9 +58,10 @@ def GetData(OpenRocket):
 
     p = [0]*12
     # Gyro
-    p[1] = OpenRocket.GetValue('TYPE_POSITION_X')
-    p[2] = OpenRocket.GetValue('TYPE_POSITION_Y')
-    p[3] = OpenRocket.GetValue('TYPE_POSITION_Z')
+    p[0] = OpenRocket.GetValue('TYPE_ACCELERATION_ANGULAR_X')
+    p[1] = OpenRocket.GetValue('TYPE_ACCELERATION_ANGULAR_Y')
+    p[2] = OpenRocket.GetValue('TYPE_ACCELERATION_ANGULAR_Z')
+
     # Acceleration x,y,z
     p[4] = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_X')
     p[5] = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Y')
