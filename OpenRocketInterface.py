@@ -44,6 +44,10 @@ class OpenRocketInterface(object):
                 print "Caught the runtime exception:\n     ", ex.message()
             quit()
         self.apiInstance = OpenRocketAPI()
+        #CoordinateClassStr = ' net.sf.openrocket.util.Coordinate'
+        #self.CoordinateClass = jpype.JClass(CoordinateClassStr)
+        
+    
         # openrocket.simulation.FlightDataType depends on resources.I10n.messages.properties
         fdt = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
         self.type_dic = {
@@ -134,36 +138,40 @@ class OpenRocketInterface(object):
         value = self.apiInstance.GetValue(TYPE)
         return value
 
-    def GetVelocityRotationX(self):
-        return self.apiInstance.GetVelocityRotationX()  # returns int
+    def SetMinTimeStep(self, timestep):
+        self.apiInstance.SetMinTimeStep(timestep)
 
-    def GetVelocityRotationY(self):
-        return self.apiInstance.GetVelocityRotationY()  # returns int
+    def GetVelocity(self):
+        return (self.GetVelocityX(), self.GetVelocityY(), self.GetVelocityZ())
 
-    def GetVelocityRotationZ(self):
-        return self.apiInstance.GetVelocityRotationZ()  # returns int
+    def GetVelocityX(self):
+        return self.apiInstance.GetVelocityX()  # returns int
 
-    def GetSimulationRunningTime(self):
-        return self.apiInstance.Getsimulationrunningtime()  # returns double
+    def GetVelocityY(self):
+        return self.apiInstance.GetVelocityY()  # returns int
 
-    def GetBoolTumbling(self):
-        return self.apiInstance.GetBoolTumbling()  # returns bool
+    def GetVelocityZ(self):
+        return self.apiInstance.GetVelocityZ()  # returns int
 
-    def GetBoolMotorIgnited(self):
-        return self.apiInstance.GetBoolMotorIgnited()  # return bool
+    def GetCordinateX(self):
+        return self.apiInstance.GetCordinateX()  # returns int
+ 
+    def GetCordinate(self):
+        coordinate = self.apiInstance.getOrientation()
+        if coordinate is None:
+            return (0,0,0)
+        return (coordinate.x, coordinate.y, coordinate.z)  # returns int
 
-    def GetBoolApogeeReached(self):
-        return self.apiInstance.GetBoolApogeeReached()  # return bool
+    def GetCordinateY(self):
+        return self.apiInstance.GetCordinateY()  # returns int
 
-    def GetBoolLaunchRodCleared(self):
-        return self.apiInstance.GetBoolLaunchRodCleared()  # return bool
-
-    def GetBoolLiftOff(self):
-        return self.apiInstance.GetBoolLiftoff()  # return bool
+    def GetCordinateZ(self):
+        return self.apiInstance.GetCordinateZ()  # returns int
 
     def IsSimulationRunning(self):
         return self.apiInstance.IsSimulationRunning()  # returns bool
-
+    def GetSimulationRunningTime(self):
+        return self.apiInstance.Getsimulationrunningtime()
     def StartSimulation(self):
         return self.apiInstance.StartSimulation()  # returns int
     def SetRandomSeed(self, random_seed):
