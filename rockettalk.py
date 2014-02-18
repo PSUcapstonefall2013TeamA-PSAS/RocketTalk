@@ -18,8 +18,6 @@ parser.add_argument("-rt", default='default', const='realtime', dest='time_step'
                     action='store_const', help="Sets time step interval to realtime")
 parser.add_argument("-d", type=int, default=0, metavar='Random Seed', dest='rand_seed',
                      help="Use a non zero constant random seed for deterministic results")
-parser.add_argument("-c", const='RunSimulation', dest='c', action='store_const',
-                     help="blah")
 args = parser.parse_args()
 
 
@@ -44,7 +42,6 @@ if args.sim_index is not None:
 #this throws an error if it's not a valid hostname, otherwise converts to IP
 if args.fc_IP:
     args.fc_IP = socket.gethostbyname(args.fc_IP)
-print args.c
 #if args.c is not None:
 #    RunRocket.RunRocket(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed)
 #else:
