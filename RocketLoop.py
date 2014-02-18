@@ -49,9 +49,20 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default'):
             p[2] = OpenRocket.GetValue(flightDataStep,'TYPE_POSITION_Y')
             p[3] = OpenRocket.GetValue(flightDataStep,'TYPE_POSITION_Z')
             # acceleration x,y,z
-            p[4] = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_X')
-            p[5] = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_Y')
-            p[6] = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_Z')
+            x = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_X')
+            y = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_Y')
+            z = OpenRocket.GetValue(flightDataStep,'TYPE_ACCELERATION_LINEAR_Z')
+            vec = [x,y,z]
+            #transform with the identity matrix.
+            idMatrix = [[0,0,1],[0,1,0],[1,0,0]]
+            newX = vec[0] * idMatrix[0][0] + vec[1] * idMatrix[0][1] + vec[2] * idMatrix[0][2]
+            newY = vec[0] * idMatrix[1][0] + vec[1] * idMatrix[1][1] + vec[2] * idMatrix[1][2]
+            newZ = vec[0] * idMatrix[2][0] + vec[1] * idMatrix[2][1] + vec[2] * idMatrix[2][2]            
+            
+            p[4] = newX
+            p[5] = newY
+            p[6] = newZ
+            
             adis.send_message(p)
          OpenRocket.StagesStep()
        print "DONE!"   
