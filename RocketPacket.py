@@ -53,6 +53,10 @@ class RocketPacket(object):
         for i in range(0, 11):
             if math.isnan(p[i]):
                 p[i] = 0
+        
+        p[4] = int((p[4]*MSS2GEE)/0.00333)
+        p[5] = int((p[5]*MSS2GEE)/0.00333)
+        p[6] = int((p[6]*MSS2GEE)/0.00333)
 
         p[4] = int((p[4]*MSS2GEE)/0.00333)
         p[5] = int((p[5]*MSS2GEE)/0.00333)

@@ -16,7 +16,7 @@ parser.add_argument("-fc", metavar='IP address',
 parser.add_argument("-rt", default='default', const='realtime', dest='time_step',
                     action='store_const', help="Sets time step interval to realtime")
 parser.add_argument("-d", type=int, default=0, metavar='Random Seed', dest='rand_seed',
-                     help="Use a constant random seed for deterministic results")
+                     help="Use a non zero constant random seed for deterministic results")
 args = parser.parse_args()
 
 
