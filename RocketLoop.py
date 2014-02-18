@@ -36,7 +36,7 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default', random_s
             p[5] = newY
             p[6] = newZ
             
-                adis.send_message(p)
+            adis.send_message(p)
             OpenRocket.StagesStep()
         
         OpenRocket.apiInstance.printExtras()
