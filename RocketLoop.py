@@ -3,7 +3,7 @@ import OpenRocketInterface as API
 import RocketPacket as ADIS
 import time
 try:
-    from config import sensor_matrAx
+    from config import sensor_matrix
 except:
     print 'Not configured.\n'
     print 'Copy config.py_dist to config.py and fill in your settings\n'

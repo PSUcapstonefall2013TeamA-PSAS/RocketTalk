@@ -126,6 +126,8 @@ class OpenRocketInterface(object):
     def SetLogFile(self, filename):  # takes in string
         return self.apiInstance.setlogfile(filename)  # returns int
 
+    #Start OpenRocketAPI functions dependant on FlightDataType
+    
     def GetValue(self, d_type):
         '''
         These values correlated to the types found in
@@ -137,6 +139,11 @@ class OpenRocketInterface(object):
         TYPE = self.type_dic.get(d_type)
         value = self.apiInstance.GetValue(TYPE)
         return value
+
+    def GetSimulationRunningTime(self):
+        return self.apiInstance.GetTime()  # returns double
+    
+    #End OpenRocketAPI functions dependant on FlightDataType
 
     def SetMinTimeStep(self, timestep):
         self.apiInstance.SetMinTimeStep(timestep)
@@ -170,8 +177,7 @@ class OpenRocketInterface(object):
 
     def IsSimulationRunning(self):
         return self.apiInstance.IsSimulationRunning()  # returns bool
-    def GetSimulationRunningTime(self):
-        return self.apiInstance.Getsimulationrunningtime()
+    
     def StartSimulation(self):
         return self.apiInstance.StartSimulation()  # returns int
     def SetRandomSeed(self, random_seed):
