@@ -52,6 +52,7 @@ class OpenRocketInterface(object):
         fdt = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
         self.type_dic = {
             'TYPE_TIME': fdt.TYPE_TIME,
+            'TYPE_TIME_STEP': fdt.TYPE_TIME_STEP,
             'TYPE_ALTITUDE': fdt.TYPE_ALTITUDE,
             'TYPE_VELOCITY_Z': fdt.TYPE_VELOCITY_Z,
             'TYPE_ACCELERATION_Z': fdt.TYPE_ACCELERATION_Z,
@@ -116,7 +117,6 @@ class OpenRocketInterface(object):
             'TYPE_AIR_TEMPERATURE': fdt.TYPE_AIR_TEMPERATURE,
             'TYPE_AIR_PRESSURE': fdt.TYPE_AIR_PRESSURE,
             'TYPE_SPEED_OF_SOUND': fdt.TYPE_SPEED_OF_SOUND,
-            'TYPE_TIME_STEP': fdt.TYPE_TIME_STEP,
             'TYPE_COMPUTATION_TIME': fdt.TYPE_COMPUTATION_TIME
         }
 
@@ -145,8 +145,8 @@ class OpenRocketInterface(object):
     
     #End OpenRocketAPI functions dependant on FlightDataType
 
-    def SetMinTimeStep(self, timestep):
-        self.apiInstance.SetMinTimeStep(timestep)
+    #def SetMinTimeStep(self, timestep):
+    #    self.apiInstance.SetMinTimeStep(timestep)
 
     def GetVelocity(self):
         return (self.GetVelocityX(), self.GetVelocityY(), self.GetVelocityZ())
@@ -175,21 +175,15 @@ class OpenRocketInterface(object):
     def GetCordinateZ(self):
         return self.apiInstance.GetCordinateZ()  # returns int
 
-    def IsSimulationRunning(self):
-        return self.apiInstance.IsSimulationRunning()  # returns bool
+    def SimulationIsRunning(self):
+        return self.apiInstance.SimulationIsRunning()  # returns bool
     
-    def StartSimulation(self):
-        return self.apiInstance.StartSimulation()  # returns int
-    def SetRandomSeed(self, random_seed):
-        self.apiInstance.SetRandomSeed(random_seed)
-    def SimulationStep(self):
-        return self.apiInstance.SimulationStep()  # returns int
-
-    def LoadRocket(self, szFileName):  # takes in a string
-        self.LoadRocketSpecific(szFileName, 1)
-
-    def LoadRocketSpecific(self, szFileName, simtograb):  # takes in a string and int
-        errorCode = self.apiInstance.LoadRocket(szFileName, simtograb)
+    #def StartSimulation(self):
+    #    return self.apiInstance.StartSimulation()  # returns int
+    #def SetRandomSeed(self, random_seed):
+    #    self.apiInstance.SetRandomSeed(random_seed)
+    def SimulationSetup(self, szFileName, simtograb=1, randSeed=0, timeStep=0.0):  # takes in a string and int
+        errorCode = self.apiInstance.SimulationSetup(szFileName, simtograb, randSeed, timeStep)
         if (errorCode == -1):
             print "Oops! No simulations available in this file."
             quit()
@@ -204,12 +198,21 @@ class OpenRocketInterface(object):
             quit()
         else:
             print "Successfully loaded rocket simulation data!!!"
+            
+    def SimulationStep(self, steps=1):
+        return self.apiInstance.SimulationStep(steps)  # returns int
 
-    def IsSimulationStagesRunning(self):
-        return self.apiInstance.IsSimulationStagesRunning()  # returns bool
+    def SimulationRun(self):
+        return self.apiInstance.SimulationRun()
+    
+    def FullCSVOut(self, fileName):
+        return self.apiInstance.FullCSVOut(fileName)
+    
+    #def IsSimulationStagesRunning(self):
+    #    return self.apiInstance.IsSimulationStagesRunning()  # returns bool
 
-    def IsSimulationLoopRunning(self):
-        return self.apiInstance.IsSimulationLoopRunning()  # returns int
+    #def IsSimulationRunning(self):
+    #    return self.apiInstance.IsSimulationRunning()  # returns int
 
-    def StagesStep(self):
-        return self.apiInstance.StagesStep()  # return int
+    #def StagesStep(self):
+    #    return self.apiInstance.StagesStep()  # return int

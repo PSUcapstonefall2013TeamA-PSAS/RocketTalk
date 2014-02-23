@@ -2,6 +2,8 @@
 JAR_PATH = "/home/robew/git/openrocket/swing/build/jar/OpenRocket.jar"
 # PATH to libjvm.so
 JVM = "/usr/lib/jvm/java-7-oracle/jre/lib/i386/server/libjvm.so"
+# PATH to CSV output
+csv_output = "/home/robew/git/rockettalk.csv"
 
 #Matrix to transform rocket coordinates to sensor coordinates
 sensor_matrix = [[0,0,1],[0,1,0],[1,0,0]]

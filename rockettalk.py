@@ -4,7 +4,7 @@ and sends the acceleration and orientation data to a flight computer"""
 import argparse
 import socket
 import RocketLoop
-import RunRocket
+#import RunRocket
 
 parser = argparse.ArgumentParser(description="The RocketTalk program")
 parser.add_argument("filename", metavar="filename.ork",
@@ -16,6 +16,8 @@ parser.add_argument("-fc", metavar='IP address',
                     help="Override configured IP address of fc")
 parser.add_argument("-rt", default='default', const='realtime', dest='time_step',
                     action='store_const', help="Sets time step interval to realtime")
+parser.add_argument("-ns", default='default', const='none', dest='time_step',
+                    action='store_const', help="Disable stepping")
 parser.add_argument("-d", type=int, default=0, metavar='Random Seed', dest='rand_seed',
                      help="Use a non zero constant random seed for deterministic results")
 args = parser.parse_args()
@@ -37,6 +39,8 @@ if args.sim_index is not None:
     if args.sim_index < 1:
         print "Invalid simulation index, enter index > 0 please."
         quit()
+else:
+    args.sim_index = 1
 
 #sanity check -fc.
 #this throws an error if it's not a valid hostname, otherwise converts to IP

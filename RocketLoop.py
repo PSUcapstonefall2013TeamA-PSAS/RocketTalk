@@ -4,6 +4,7 @@ import RocketPacket as ADIS
 import time
 try:
     from config import sensor_matrix
+    from config import csv_output
 except:
     print 'Not configured.\n'
     print 'Copy config.py_dist to config.py and fill in your settings\n'
@@ -13,28 +14,29 @@ except:
     sensor_matrix = [[1,0,0],[0,1,0],[0,0,1]]
 
 #Main simulation loop
-def RocketLoop(orkFile, sim_index=None, host=None, time_step='default', random_seed=0):
+def RocketLoop(orkFile, sim_index=1, host=None, time_step='default', random_seed=0.0):
 
     adis = ADIS.RocketPacket(host)
     OpenRocket = API.OpenRocketInterface()
-    OpenRocket.SetRandomSeed(random_seed)
-    if sim_index is not None:
-        OpenRocket.LoadRocketSpecific(orkFile, sim_index)
-    else:
-        OpenRocket.LoadRocket(orkFile)
-    OpenRocket.StartSimulation()
+    OpenRocket.SimulationSetup(orkFile, sim_index, random_seed)
 
     print "Starting simulation"
 
-    if time_step == 'default':  # Step through simulation as fast as possible
-        while OpenRocket.IsSimulationStagesRunning():
-            while OpenRocket.IsSimulationLoopRunning():
-                p = GetData(OpenRocket)
+    if time_step == 'none':
+        OpenRocket.SimulationRun()
+        OpenRocket.FullCSVOut(csv_output)
+        print "Stepless RocketLoop DONE!"
+        
+    elif time_step == 'default':  # Step through simulation as fast as possible
+        OpenRocket.SimulationStep(1)
+        while OpenRocket.SimulationIsRunning():
+            p = GetData(OpenRocket)
 
             adis.send_message(p)
-            OpenRocket.StagesStep()
-        
-        OpenRocket.apiInstance.printExtras()
+            
+            OpenRocket.SimulationStep(1)
+        #OpenRocket.FullCSVOut(csv_output)
+        #OpenRocket.apiInstance.printExtras()
         print "Instant stepping RocketLoop DONE!"
 
     elif time_step == 'realtime':  # Step through simulation in realtime
@@ -42,22 +44,25 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default', random_s
         simTime = 0
         sleepTime = 0
 
-        while OpenRocket.IsSimulationStagesRunning():
-            while OpenRocket.IsSimulationLoopRunning():
-                stepTimer = OpenRocket.GetValue('TYPE_TIME_STEP') + time.time()
-                simTime = OpenRocket.GetSimulationRunningTime()
+        
+        stepTimer = OpenRocket.GetValue('TYPE_TIME_STEP') + time.time()
+        simTime = OpenRocket.GetSimulationRunningTime()
+        OpenRocket.SimulationStep(1)
+        while OpenRocket.SimulationIsRunning():
+            stepTimer = OpenRocket.GetValue('TYPE_TIME_STEP') + time.time()
+            simTime = OpenRocket.GetSimulationRunningTime()
+            p = GetData(OpenRocket)
 
-                p = GetData(OpenRocket)
+            sleepTime = sleepTime + stepTimer - time.time()
+            if sleepTime > 0.25:  # Sleep when we get ahead more than 0.25 seconds
+                time.sleep(sleepTime)
+                sleepTime = 0
 
-                sleepTime = sleepTime + stepTimer - time.time()
-                if sleepTime > 0.25:  # Sleep when we get ahead more than 0.25 seconds
-                    time.sleep(sleepTime)
-                    sleepTime = 0
-
-                adis.send_message(p)
-
-            OpenRocket.StagesStep()
-        OpenRocket.apiInstance.printExtras()
+            adis.send_message(p)
+                
+            OpenRocket.SimulationStep(1)
+        #OpenRocket.FullCSVOut(csv_output)
+        #OpenRocket.apiInstance.printExtras()
         actualTime = time.time() - actualTime
         print "Realtime RocketLoop DONE!"
         print "Simulation Time: ", simTime
@@ -66,13 +71,12 @@ def RocketLoop(orkFile, sim_index=None, host=None, time_step='default', random_s
 
 #Gets simulation data and sets up packet for sending
 def GetData(OpenRocket):
-    iteration = OpenRocket.SimulationStep()
 
     p = [0]*12
     # Gyro
-    p[0] = OpenRocket.GetValue('TYPE_PITCH_RATE')
-    p[1] = OpenRocket.GetValue('TYPE_YAW_RATE')
-    p[2] = OpenRocket.GetValue('TYPE_ROLL_RATE')
+    p[1] = OpenRocket.GetValue('TYPE_PITCH_RATE')
+    p[2] = OpenRocket.GetValue('TYPE_YAW_RATE')
+    p[3] = OpenRocket.GetValue('TYPE_ROLL_RATE')
     # Acceleration x,y,z
     x = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_X')
     y = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Y')
@@ -87,5 +91,4 @@ def GetData(OpenRocket):
     p[5] = newY
     p[6] = newZ
     
-
     return p
