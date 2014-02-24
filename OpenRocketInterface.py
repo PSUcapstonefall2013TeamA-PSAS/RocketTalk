@@ -46,8 +46,7 @@ class OpenRocketInterface(object):
         self.apiInstance = OpenRocketAPI()
         #CoordinateClassStr = ' net.sf.openrocket.util.Coordinate'
         #self.CoordinateClass = jpype.JClass(CoordinateClassStr)
-        
-    
+
         # openrocket.simulation.FlightDataType depends on resources.I10n.messages.properties
         fdt = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
         self.type_dic = {
@@ -120,14 +119,11 @@ class OpenRocketInterface(object):
             'TYPE_COMPUTATION_TIME': fdt.TYPE_COMPUTATION_TIME
         }
 
-    def cleanup(self):
-        jpype.shutdownJVM()
-
     def SetLogFile(self, filename):  # takes in string
         return self.apiInstance.setlogfile(filename)  # returns int
 
     #Start OpenRocketAPI functions dependant on FlightDataType
-    
+
     def GetValue(self, d_type):
         '''
         These values correlated to the types found in
@@ -142,7 +138,7 @@ class OpenRocketInterface(object):
 
     def GetSimulationRunningTime(self):
         return self.apiInstance.GetTime()  # returns double
-    
+
     #End OpenRocketAPI functions dependant on FlightDataType
 
     #def SetMinTimeStep(self, timestep):
@@ -162,7 +158,7 @@ class OpenRocketInterface(object):
 
     def GetCordinateX(self):
         return self.apiInstance.GetCordinateX()  # returns int
- 
+
     def GetCordinate(self):
         coordinate = self.apiInstance.getOrientation()
         if coordinate is None:
@@ -177,7 +173,7 @@ class OpenRocketInterface(object):
 
     def SimulationIsRunning(self):
         return self.apiInstance.SimulationIsRunning()  # returns bool
-    
+
     #def StartSimulation(self):
     #    return self.apiInstance.StartSimulation()  # returns int
     #def SetRandomSeed(self, random_seed):
@@ -198,16 +194,16 @@ class OpenRocketInterface(object):
             quit()
         else:
             print "Successfully loaded rocket simulation data!!!"
-            
+
     def SimulationStep(self, steps=1):
         return self.apiInstance.SimulationStep(steps)  # returns int
 
     def SimulationRun(self):
         return self.apiInstance.SimulationRun()
-    
+
     def FullCSVOut(self, fileName):
         return self.apiInstance.FullCSVOut(fileName)
-    
+
     #def IsSimulationStagesRunning(self):
     #    return self.apiInstance.IsSimulationStagesRunning()  # returns bool
 

@@ -27,3 +27,6 @@ MPL_TX_PORT     = 35010
 ROLL_IP         = '127.0.0.1'
 ROLL_TX_PORT    = 35004
 ROLL_RX_PORT    = 35003
+
+# Limits how far a realtime loop can be off by in seconds
+SLEEP_THRESHOLD = 0.25

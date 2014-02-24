@@ -33,12 +33,20 @@ RAD2DEG = 180/math.pi
 MSS2GEE = 1.0/9.81
 
 ADIS_Message = struct.Struct('!12h')
+
+
 def CLAMPR(value):
     return CLAMP(value, "Roll")
+
+
 def CLAMPA(value):
     return CLAMP(value, "Acceleration")
+
+
 def CLAMP(value, msg):
     return clamp(msg, value, -32768, 32767)
+
+
 def clamp(msg, value, minV, maxV):
     if value < minV:
         print msg, value
@@ -47,6 +55,7 @@ def clamp(msg, value, minV, maxV):
         print msg, value
         return maxV
     return value
+
 
 class RocketPacket(object):
 
@@ -58,7 +67,7 @@ class RocketPacket(object):
         self.ADISsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.ADISsocket.bind((ip, config.ADIS_TX_PORT))
 
-    def send_message(self, p, data=None):
+    def send_message(self, p):
 
         for i in range(0, 11):
             if math.isnan(p[i]):
@@ -66,7 +75,7 @@ class RocketPacket(object):
         p[1] = CLAMPR(int(((p[0])*RAD2DEG)/.05))
         p[2] = CLAMPR(int(((p[1])*RAD2DEG)/.05))
         p[3] = CLAMPR(int(((p[2])*RAD2DEG)/.05))
-        
+
         p[4] = CLAMPA(int((p[4]*MSS2GEE)/0.00333))
         p[5] = CLAMPA(int((p[5]*MSS2GEE)/0.00333))
         p[6] = CLAMPA(int((p[6]*MSS2GEE)/0.00333))
