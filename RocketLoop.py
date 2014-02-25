@@ -2,6 +2,8 @@
 import OpenRocketInterface as API
 import RocketPacket as ADIS
 import time
+import numpy as np
+import math
 from config import SLEEP_THRESHOLD
 try:
     from config import sensor_matrix
@@ -81,14 +83,28 @@ def GetData(OpenRocket):
     x = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_X')
     y = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Y')
     z = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Z') + OpenRocket.GetValue('TYPE_GRAVITY')
-    vec = [x,y,z]
+    accel = np.array([x,y,z])
 
-    newX = vec[0] * sensor_matrix[0][0] + vec[1] * sensor_matrix[0][1] + vec[2] * sensor_matrix[0][2]
-    newY = vec[0] * sensor_matrix[1][0] + vec[1] * sensor_matrix[1][1] + vec[2] * sensor_matrix[1][2]
-    newZ = vec[0] * sensor_matrix[2][0] + vec[1] * sensor_matrix[2][1] + vec[2] * sensor_matrix[2][2]
+    sphi = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_PHI')) #sine of zenith offset
+    sthe = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_THETA')) #sine of azimuth
+    spsi = math.sin(0) #sine of roll
+    cphi = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_PHI')) #cosine of zenith offset
+    cthe = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_THETA')) #cosine of azimuth
+    cpsi = math.cos(0) #cosine of roll
 
-    p[4] = newX
-    p[5] = newY
-    p[6] = newZ
+    #the Eulerian transformation matrix for world to body coordinate systems
+    rotWorldtoBody = np.array([[cthe*cpsi, cthe*sphi, -sthe],
+                               [sphi*sthe*cpsi - cphi*spsi, sphi*sthe*spsi+cphi*cpsi, sphi*cthe],
+                               [cthe*sthe*cpsi+sphi*spsi, cphi*sthe*spsi-sphi*cpsi, cphi*cthe]])
+
+
+    body_accel = np.dot(accel, rotWorldtoBody)
+
+    offset_body_accel = np.dot(body_accel , np.array(sensor_matrix))
+
+    p[4] = offset_body_accel[0]
+    p[5] = offset_body_accel[0]
+    p[6] = offset_body_accel[0]
+
 
     return p
