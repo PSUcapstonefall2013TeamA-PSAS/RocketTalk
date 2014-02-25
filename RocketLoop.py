@@ -103,8 +103,8 @@ def GetData(OpenRocket):
     offset_body_accel = np.dot(body_accel , np.array(sensor_matrix))
 
     p[4] = offset_body_accel[0]
-    p[5] = offset_body_accel[0]
-    p[6] = offset_body_accel[0]
+    p[5] = offset_body_accel[1]
+    p[6] = offset_body_accel[2]
 
 
     return p
