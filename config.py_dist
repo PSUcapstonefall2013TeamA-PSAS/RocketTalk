@@ -1,12 +1,22 @@
 #Path to openrocket jar file
 JAR_PATH = "/home/robew/git/openrocket/swing/build/jar/OpenRocket.jar"
 # PATH to libjvm.so
+# To find the path
+# readlink -f $(which java)
+# example output:
+#    /usr/lib/jvm/jdk-7-oracle-x64/jre/bin/java
+# if the output includes x64 in the path
+#    /usr/lib/jvm/jdk-7-oracle-x64/jre/lib/amd64/server/libjvm.so
+# Otherwise
+#    /usr/lib/jvm/jdk-7-oracle/jre/lib/i386/server/libjvm.so
 JVM = "/usr/lib/jvm/java-7-oracle/jre/lib/i386/server/libjvm.so"
+
 # PATH to CSV output
 csv_output = "/home/robew/git/rockettalk.csv"
 
 #Matrix to transform rocket coordinates to sensor coordinates
-sensor_matrix = [[0,0,1],[0,1,0],[1,0,0]]
+#Example swapping x and z
+sensor_matrix = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
 
 #This service
 WEBSERVICE_PORT = 5000
