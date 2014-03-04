@@ -23,7 +23,7 @@ def RocketLoop(orkFile, sim_index=1, host=None, time_step='default', random_seed
 
     adis = ADIS.RocketPacket(host)
     OpenRocket = API.OpenRocketInterface()
-    OpenRocket.SetLlogFile(log_file)  
+    OpenRocket.SetLogFile(log_file)  
     OpenRocket.SimulationSetup(orkFile, sim_index, random_seed)
 
     print "Starting simulation"
