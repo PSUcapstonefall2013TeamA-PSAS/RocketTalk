@@ -8,6 +8,7 @@ from config import SLEEP_THRESHOLD
 try:
     from config import sensor_matrix
     from config import csv_output
+    from config import log_file
 except:
     print 'Not configured.\n'
     print 'Copy config.py_dist to config.py and fill in your settings\n'
@@ -22,6 +23,7 @@ def RocketLoop(orkFile, sim_index=1, host=None, time_step='default', random_seed
 
     adis = ADIS.RocketPacket(host)
     OpenRocket = API.OpenRocketInterface()
+    OpenRocket.SetLlogFile(log_file)  
     OpenRocket.SimulationSetup(orkFile, sim_index, random_seed)
 
     print "Starting simulation"

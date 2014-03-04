@@ -20,6 +20,7 @@ parser.add_argument("-ns", default='default', const='none', dest='time_step',
                     action='store_const', help="Disable stepping")
 parser.add_argument("-d", type=int, default=0, metavar='Random Seed', dest='rand_seed',
                     help="Use a non zero constant random seed for deterministic results")
+
 args = parser.parse_args()
 
 
@@ -50,4 +51,4 @@ if args.fc_IP:
 #    RunRocket.RunRocket(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed)
 #else:
     #Call Rocketloop
-RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed)
+RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed,args.log_string)
