@@ -31,7 +31,7 @@ class OpenRocketInterface(object):
     def __init__(self):
         jpype.startJVM(jvm, "-Djava.class.path=%s" % classpath)
         SwingStartup = jpype.JClass('net.sf.openrocket.startup.SwingStartup')
-        SwingStartup.initializeLogging()
+        #SwingStartup.initializeLogging()
         openRocketAPIClass = 'net.sf.openrocket.startup.OpenRocketAPI'
 
         try:
