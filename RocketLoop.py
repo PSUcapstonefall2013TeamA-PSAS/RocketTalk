@@ -95,10 +95,9 @@ def GetData(OpenRocket):
     cpsi = math.cos(0) #cosine of roll
 
     #the Eulerian transformation matrix for world to body coordinate systems
-    rotWorldtoBody = np.array([[cthe*cpsi, cthe*sphi, -sthe],
-                               [sphi*sthe*cpsi - cphi*spsi, sphi*sthe*spsi+cphi*cpsi, sphi*cthe],
-                               [cthe*sthe*cpsi+sphi*spsi, cphi*sthe*spsi-sphi*cpsi, cphi*cthe]])
-
+    rotWorldtoBody = np.array([[cpsi*cphi-cthe*sphi*spsi, cpsi*sphi+cthe*cphi*spsi, spsi*sthe],
+                               [-spsi*cphi-cthe*sphi*cpsi, -spsi*sphi+cthe*cphi*cpsi, cpsi*sthe],
+                               [sthe*sphi, -sthe*cphi, cthe]])
 
     body_accel = np.dot(accel, rotWorldtoBody)
 
