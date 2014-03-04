@@ -30,8 +30,6 @@ except IOError, ex:
 class OpenRocketInterface(object):
     def __init__(self):
         jpype.startJVM(jvm, "-Djava.class.path=%s" % classpath)
-        SwingStartup = jpype.JClass('net.sf.openrocket.startup.SwingStartup')
-        #SwingStartup.initializeLogging()
         openRocketAPIClass = 'net.sf.openrocket.startup.OpenRocketAPI'
 
         try:
@@ -44,10 +42,9 @@ class OpenRocketInterface(object):
                 print "Caught the runtime exception:\n     ", ex.message()
             quit()
         self.apiInstance = OpenRocketAPI()
-        #CoordinateClassStr = ' net.sf.openrocket.util.Coordinate'
-        #self.CoordinateClass = jpype.JClass(CoordinateClassStr)
 
-        # openrocket.simulation.FlightDataType depends on resources.I10n.messages.properties
+        # openrocket.simulation.FlightDataType
+        # depends on resources.I10n.messages.properties
         fdt = jpype.JPackage('net.sf.openrocket.simulation').FlightDataType
         self.type_dic = {
             'TYPE_TIME': fdt.TYPE_TIME,
@@ -141,9 +138,6 @@ class OpenRocketInterface(object):
 
     #End OpenRocketAPI functions dependant on FlightDataType
 
-    #def SetMinTimeStep(self, timestep):
-    #    self.apiInstance.SetMinTimeStep(timestep)
-
     def GetVelocity(self):
         return (self.GetVelocityX(), self.GetVelocityY(), self.GetVelocityZ())
 
@@ -162,7 +156,7 @@ class OpenRocketInterface(object):
     def GetCordinate(self):
         coordinate = self.apiInstance.getOrientation()
         if coordinate is None:
-            return (0,0,0)
+            return (0, 0, 0)
         return (coordinate.x, coordinate.y, coordinate.z)  # returns int
 
     def GetCordinateY(self):
@@ -174,12 +168,10 @@ class OpenRocketInterface(object):
     def SimulationIsRunning(self):
         return self.apiInstance.SimulationIsRunning()  # returns bool
 
-    #def StartSimulation(self):
-    #    return self.apiInstance.StartSimulation()  # returns int
-    #def SetRandomSeed(self, random_seed):
-    #    self.apiInstance.SetRandomSeed(random_seed)
-    def SimulationSetup(self, szFileName, simtograb=1, randSeed=0, timeStep=0.0):  # takes in a string and int
-        errorCode = self.apiInstance.SimulationSetup(szFileName, simtograb, randSeed, timeStep)
+    #takes at least a string and int
+    def SimulationSetup(self, szFileName, simtograb=1, randSeed=0, timeStep=0.0):
+        errorCode = self.apiInstance.SimulationSetup(szFileName, simtograb,
+                                                     randSeed, timeStep)
         if (errorCode == -1):
             print "Oops! No simulations available in this file."
             quit()
@@ -203,12 +195,3 @@ class OpenRocketInterface(object):
 
     def FullCSVOut(self, fileName):
         return self.apiInstance.FullCSVOut(fileName)
-
-    #def IsSimulationStagesRunning(self):
-    #    return self.apiInstance.IsSimulationStagesRunning()  # returns bool
-
-    #def IsSimulationRunning(self):
-    #    return self.apiInstance.IsSimulationRunning()  # returns int
-
-    #def StagesStep(self):
-    #    return self.apiInstance.StagesStep()  # return int
