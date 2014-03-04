@@ -50,8 +50,6 @@ def RocketLoop(orkFile, sim_index=1, host=None, time_step='default', random_seed
         simTime = 0
         sleepTime = 0
 
-        stepTimer = OpenRocket.GetValue('TYPE_TIME_STEP') + time.time()
-        simTime = OpenRocket.GetSimulationRunningTime()
         OpenRocket.SimulationStep(1)
         while OpenRocket.SimulationIsRunning():
             stepTimer = OpenRocket.GetValue('TYPE_TIME_STEP') + time.time()
@@ -77,30 +75,37 @@ def RocketLoop(orkFile, sim_index=1, host=None, time_step='default', random_seed
 def GetData(OpenRocket):
 
     p = [0]*12
-    # Gyro
-    p[1] = OpenRocket.GetValue('TYPE_PITCH_RATE')
-    p[2] = OpenRocket.GetValue('TYPE_YAW_RATE')
-    p[3] = OpenRocket.GetValue('TYPE_ROLL_RATE')
+    
+    try:
+        # Gyro
+        p[1] = OpenRocket.GetValue('TYPE_PITCH_RATE')
+        p[2] = OpenRocket.GetValue('TYPE_YAW_RATE')
+        p[3] = OpenRocket.GetValue('TYPE_ROLL_RATE')
+    except:
+        pass
+
     # Acceleration x,y,z
     x = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_X')
     y = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Y')
     z = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Z') + OpenRocket.GetValue('TYPE_GRAVITY')
     accel = np.array([x,y,z])
 
-    sphi = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_PHI')) #sine of zenith offset
-    sthe = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_THETA')) #sine of azimuth
-    spsi = math.sin(0) #sine of roll
-    cphi = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_PHI')) #cosine of zenith offset
-    cthe = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_THETA')) #cosine of azimuth
-    cpsi = math.cos(0) #cosine of roll
+    try:
+        sphi = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_PHI')) #sine of zenith offset
+        sthe = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_THETA')) #sine of azimuth
+        spsi = math.sin(0) #sine of roll
+        cphi = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_PHI')) #cosine of zenith offset
+        cthe = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_THETA')) #cosine of azimuth
+        cpsi = math.cos(0) #cosine of roll
 
-    #the Eulerian transformation matrix for world to body coordinate systems
-    rotWorldtoBody = np.array([[cpsi*cphi-cthe*sphi*spsi, cpsi*sphi+cthe*cphi*spsi, spsi*sthe],
-                               [-spsi*cphi-cthe*sphi*cpsi, -spsi*sphi+cthe*cphi*cpsi, cpsi*sthe],
-                               [sthe*sphi, -sthe*cphi, cthe]])
+        #the Eulerian transformation matrix for world to body coordinate systems
+        rotWorldtoBody = np.array([[cpsi*cphi-cthe*sphi*spsi, cpsi*sphi+cthe*cphi*spsi, spsi*sthe],
+                                   [-spsi*cphi-cthe*sphi*cpsi, -spsi*sphi+cthe*cphi*cpsi, cpsi*sthe],
+                                   [sthe*sphi, -sthe*cphi, cthe]])
 
-    body_accel = np.dot(accel, rotWorldtoBody)
-
+        body_accel = np.dot(accel, rotWorldtoBody)
+    except:
+        body_accel = accel
     offset_body_accel = np.dot(body_accel , np.array(sensor_matrix))
 
     p[4] = offset_body_accel[0]
