@@ -51,4 +51,4 @@ if args.fc_IP:
 #    RunRocket.RunRocket(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed)
 #else:
     #Call Rocketloop
-RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed,args.log_string)
+RocketLoop.RocketLoop(args.filename, args.sim_index, args.fc_IP, args.time_step, args.rand_seed)
