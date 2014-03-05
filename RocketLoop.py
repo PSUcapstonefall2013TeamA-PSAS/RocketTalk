@@ -87,9 +87,9 @@ def GetData(OpenRocket):
 
     # Acceleration x,y,z
     try:
-        x = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_X')
-        y = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Y')
-        z = OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Z') + OpenRocket.GetValue('TYPE_GRAVITY')
+        x = OpenRocket.GetValue('TYPE_ACCELERATION_X')
+        y = OpenRocket.GetValue('TYPE_ACCELERATION_Y')
+        z = OpenRocket.GetValue('TYPE_ACCELERATION_Z') + OpenRocket.GetValue('TYPE_GRAVITY')
     except:
         x = y = z = 0
     accel = np.array([x, y, z])
