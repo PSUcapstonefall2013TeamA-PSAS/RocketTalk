@@ -89,38 +89,51 @@ def GetData(OpenRocket):
     try:
         x = OpenRocket.GetValue('TYPE_ACCELERATION_X')
         y = OpenRocket.GetValue('TYPE_ACCELERATION_Y')
-        z = OpenRocket.GetValue('TYPE_ACCELERATION_Z') + OpenRocket.GetValue('TYPE_GRAVITY')
+        z = (OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Z')
+             + OpenRocket.GetValue('TYPE_GRAVITY'))
     except:
         x = y = z = 0
     accel = np.array([x, y, z])
 
     try:
-        #sine of zenith offset
-        sphi = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_PHI'))
-        #sine of azimuth
-        sthe = math.sin(OpenRocket.GetValue('TYPE_ORIENTATION_THETA'))
-        #sine of roll
-        spsi = math.sin(0)
+        phi = OpenRocket.GetValue('TYPE_ORIENTATION_PHI')
+        theta = OpenRocket.GetValue('TYPE_ORIENTATION_THETA')
+        # OpenRocket does not give this currently, 0 for no psi rotation
+        psi = 0
 
-        #cosine of zenith offset
-        cphi = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_PHI'))
-        #cosine of azimuth
-        cthe = math.cos(OpenRocket.GetValue('TYPE_ORIENTATION_THETA'))
-        #cosine of roll
-        cpsi = math.cos(0)
-
-        #the Eulerian transformation matrix for world to body coordinate systems
-        rotWorldtoBody = np.array([[cpsi*cphi-cthe*sphi*spsi, cpsi*sphi+cthe*cphi*spsi, spsi*sthe],
-                                   [-spsi*cphi-cthe*sphi*cpsi, -spsi*sphi+cthe*cphi*cpsi, cpsi*sthe],
-                                   [sthe*sphi, -sthe*cphi, cthe]])
+        rotWorldtoBody = euler_rotation(psi, phi, theta)
+        rotWorldtoBody = euler_rotation(phi, theta, psi)
 
         body_accel = np.dot(accel, rotWorldtoBody)
     except:
         body_accel = accel
     offset_body_accel = np.dot(body_accel, np.array(sensor_matrix))
-
     p[4] = offset_body_accel[0]
     p[5] = offset_body_accel[1]
     p[6] = offset_body_accel[2]
 
     return p
+
+
+def euler_rotation(phi, theta, psi):
+    # source http://mathworld.wolfram.com/EulerAngles.html
+    # returns psi rotation matrix * theta rotation matrix * phi rotation matrix
+    #sine of zenith offset
+    sphi = math.sin(phi)
+    #sine of azimuth
+    sthe = math.sin(theta)
+    #sine of roll
+    spsi = math.sin(psi)
+
+    #cosine of zenith offset
+    cphi = math.cos(phi)
+    #cosine of azimuth
+    cthe = math.cos(theta)
+    #cosine of roll
+    cpsi = math.cos(psi)
+
+    #the Eulerian transformation matrix for world to body coordinate systems
+    return np.array(
+        [[cpsi*cphi-cthe*sphi*spsi, cpsi*sphi+cthe*cphi*spsi, spsi*sthe],
+         [-spsi*cphi-cthe*sphi*cpsi, -spsi*sphi+cthe*cphi*cpsi, cpsi*sthe],
+         [sthe*sphi, -sthe*cphi, cthe]])
