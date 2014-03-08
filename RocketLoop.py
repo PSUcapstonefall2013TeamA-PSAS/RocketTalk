@@ -102,7 +102,6 @@ def GetData(OpenRocket):
         psi = 0
 
         rotWorldtoBody = euler_rotation(psi, phi, theta)
-        rotWorldtoBody = euler_rotation(phi, theta, psi)
 
         body_accel = np.dot(accel, rotWorldtoBody)
     except:
