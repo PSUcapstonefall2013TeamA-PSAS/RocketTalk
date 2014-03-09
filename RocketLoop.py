@@ -89,7 +89,7 @@ def GetData(OpenRocket):
     try:
         x = OpenRocket.GetValue('TYPE_ACCELERATION_X')
         y = OpenRocket.GetValue('TYPE_ACCELERATION_Y')
-        z = (OpenRocket.GetValue('TYPE_ACCELERATION_LINEAR_Z')
+        z = (OpenRocket.GetValue('TYPE_ACCELERATION_Z')
              + OpenRocket.GetValue('TYPE_GRAVITY'))
     except:
         x = y = z = 0
