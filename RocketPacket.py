@@ -72,9 +72,9 @@ class RocketPacket(object):
         for i in range(0, 11):
             if math.isnan(p[i]):
                 p[i] = 0
-        p[1] = CLAMPR(int(((p[0])*RAD2DEG)/.05))
-        p[2] = CLAMPR(int(((p[1])*RAD2DEG)/.05))
-        p[3] = CLAMPR(int(((p[2])*RAD2DEG)/.05))
+        p[1] = CLAMPR(int(((p[1])*RAD2DEG)/.05))
+        p[2] = CLAMPR(int(((p[2])*RAD2DEG)/.05))
+        p[3] = CLAMPR(int(((p[3])*RAD2DEG)/.05))
 
         p[4] = CLAMPA(int((p[4]*MSS2GEE)/0.00333))
         p[5] = CLAMPA(int((p[5]*MSS2GEE)/0.00333))
